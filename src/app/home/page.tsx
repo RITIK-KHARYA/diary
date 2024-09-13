@@ -1,29 +1,31 @@
 import { createUserToDb } from "@/actions/createUserToDb";
 import Menubar from "@/components/Menubar";
-import Navbar from "@/components/Navbar";
 import PostEditor from "@/components/posts/editor/PostEditor";
-import Post from "@/components/posts/Post";
 import Trendsidebar from "@/components/Trendsidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import prisma from "@/lib/prisma";
+import ForYoufeed from "../(main)/ForYoufeed";
+import { QueryClient } from "@tanstack/react-query";
 // import ForYoufeed from "../(main)/ForYoufeed";
 export default async function Home() {
   const user = await createUserToDb();
-  const posts = await prisma.post.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      user: {
-        select: {
-          displayname: true,
-          avatarurl: true,
-          updatedAt: true,
-          createdAt: true,
-        },
-      },
-    },
-  });
+
+  // const posts = await prisma.post.findMany({
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  //   include: {
+  //     user: {
+  //       select: {
+  //         displayname: true,
+  //         avatarurl: true,
+  //         updatedAt: true,
+  //         createdAt: true,
+  //       },
+  //     },
+  //   },
+  // });
+
   return (
     <main className="w-full h-screen mt-16 ">
       <div className="flex flex-row gap-x-5 ">
@@ -37,9 +39,10 @@ export default async function Home() {
             />
 
             <div className="flex flex-col  justify-start gap-y-4 mt-4 ">
-              {posts.map((post) => (
+              {/* {posts.map((post) => (
                 <Post key={post.id} post={post} />
-              ))}
+              ))} */}
+              <ForYoufeed />
             </div>
           </div>
         </ScrollArea>

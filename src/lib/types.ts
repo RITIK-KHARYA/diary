@@ -18,3 +18,8 @@ export const Postdataselect = {
 export type PostData = Prisma.PostGetPayload<{
   include: typeof Postdataselect;
 }>;
+
+export interface PostPage {
+  posts: PostData[];
+  nextcursor: string | null;
+}
