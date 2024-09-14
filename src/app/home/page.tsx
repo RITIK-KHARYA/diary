@@ -32,7 +32,7 @@ export default async function Home() {
         <div className="sticky space-y-2 w-[350px] flex justify-center ml-5">
           <Menubar classname="sticky top-[5.5rem] gap-2 m-0 w-56 h-fit hidden sm:block px-3 py-8 space-y-4 border-2 border-zinc-900 bg-card rounded-xl flex-none shadow-xl divide-y-2 divide-zinc-800" />
         </div>
-        <ScrollArea className="flex-1 h-screen  ">
+        <ScrollArea className="flex-1 h-[calc(100vh-50px)]  ">
           <div className="h-full flex flex-col w-fit shadow-sm ml-10  ">
             <PostEditor
               avatar={user?.avatarurl || "https://github.com/shadcn.png"}

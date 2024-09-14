@@ -17,9 +17,6 @@ export async function GET(req: NextRequest) {
     }
 
     const posts = await prisma.post.findMany({
-      where: {
-        userId: user.id,
-      },
       take: pageSize + 1,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: {
