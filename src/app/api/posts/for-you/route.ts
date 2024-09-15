@@ -7,6 +7,7 @@ import { PostPage } from "@/lib/types";
 export async function GET(req: NextRequest) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
+    console.log(cursor);
 
     const pageSize = 10;
 
@@ -34,8 +35,9 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    const nextcursor = posts.length > pageSize ? posts[pageSize].id : null;
 
+    const nextcursor = posts.length > pageSize ? posts[pageSize].id : null;
+    
     const data: PostPage = {
       posts: posts.slice(0, pageSize),
       nextcursor,

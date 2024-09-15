@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import InfiniteScrollContainer from "@/components/infiniteScrollcontainer";
 import { useEffect } from "react";
 import PostsLoadingskeleton from "@/components/posts/PostLoadingskeleton";
+import DeletePostDialog from "@/components/posts/DeletePostDialog";
 export default function ForYoufeed() {
   const {
     data,
@@ -28,14 +29,12 @@ export default function ForYoufeed() {
         )
         .json<PostPage>(),
     initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) => lastPage.nextcursor,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextcursor;
+    },
   });
 
-  const posts = data?.pages.flatMap((page) => page.posts) ?? []; //bc ahhi toh kahi post bana tha firse kaha se agyaa
-  // ek toh saala ye type smjh nhi aarha postpage banaya kyu and post ka type woh kyu h
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   if (status === "pending") {
     return <PostsLoadingskeleton />;
@@ -57,14 +56,15 @@ export default function ForYoufeed() {
   }
   return (
     <InfiniteScrollContainer
-      classname="space-y-4 "
-      onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+      classname="space-y-3  "
+      onBottomReached={() => hasNextPage && fetchNextPage()}
     >
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
 
       {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
+      <DeletePostDialog onClose={() => {}} open post={posts[0]} />
     </InfiniteScrollContainer>
   );
 }
