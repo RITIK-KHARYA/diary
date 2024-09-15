@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { submitpost } from "./actions";
-import { ButtonLoading } from "../../ui/LoadingButton";
+import LoadingButton from "../../ui/LoadingButton";
 import { Button } from "@/components/ui/button";
 import "./style.css";
 import useSubmitpostMutation from "./Mutation";
@@ -56,14 +56,15 @@ export default function PostEditor(avatar: { avatar: string }) {
         />
       </div>
       <div className="justify-end flex">
-        <Button
+        <LoadingButton
           className="bg-green-600/90 rounded-md w-1/5 h-8 text-white disabled:bg-green-600/50 disabled:cursor-not-allowed disabled:text-muted-foreground"
           onClick={onSubmit}
+          loading={mutation.isPending}
           // loading={mutation.isLoading}
           disabled={!input.trim()}
         >
           Post
-        </Button>{" "}
+        </LoadingButton>{" "}
         {/* problem with the button loading system */}
       </div>
     </div>

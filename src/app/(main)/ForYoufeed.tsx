@@ -55,16 +55,18 @@ export default function ForYoufeed() {
     );
   }
   return (
-    <InfiniteScrollContainer
-      classname="space-y-3  "
-      onBottomReached={() => hasNextPage && fetchNextPage()}
-    >
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+    <>
+      <DeletePostDialog post={posts[0]} open onClose={() => {}} />
+      <InfiniteScrollContainer
+        classname="space-y-3  "
+        onBottomReached={() => hasNextPage && fetchNextPage()}
+      >
+        {posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
 
-      {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
-      <DeletePostDialog onClose={() => {}} open post={posts[0]} />
-    </InfiniteScrollContainer>
+        {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
+      </InfiniteScrollContainer>
+    </>
   );
 }
