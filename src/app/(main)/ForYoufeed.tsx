@@ -56,7 +56,7 @@ export default function ForYoufeed() {
   }
   return (
     <>
-      <DeletePostDialog post={posts[0]} open onClose={() => {}} />
+      {/* <DeletePostDialog post={posts[0]} open onClose={() => {}} /> */}
       <InfiniteScrollContainer
         classname="space-y-3  "
         onBottomReached={() => hasNextPage && fetchNextPage()}

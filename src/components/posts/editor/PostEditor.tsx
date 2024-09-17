@@ -44,7 +44,8 @@ export default function PostEditor(avatar: { avatar: string }) {
     editor?.commands.clearContent();
   }
   return (
-    <div className="flex w-[525px] flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
+    // w-[calc(100%-20px)]
+    <div className="flex w-full flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
       <div className="w-full flex space-x-2 ">
         <Avatar className="mt-2  h-10 w-10 cursor-pointer ">
           <AvatarImage src={avatarurl} />

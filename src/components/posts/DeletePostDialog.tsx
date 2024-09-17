@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { PostData } from "@/lib/types";
 import {
   Dialog,
@@ -32,9 +32,9 @@ export default function DeletePostDialog({
     }
   }
   return (
-    <Dialog open={false} onOpenChange={handleopenchange}>
+    <Dialog open={open} onOpenChange={handleopenchange}>
       <DialogOverlay>
-        <DialogContent className="bg-neutral-950 border border-neutral-700/[0.2] p-4 rounded-md flex flex-col space-y-2">
+        <DialogContent className="bg-neutral-950 border border-neutral-700/[0.2] p-4 rounded-md flex flex-col space-y-2 cursor-pointer">
           <DialogHeader>
             <DialogTitle>
               <DialogDescription>
