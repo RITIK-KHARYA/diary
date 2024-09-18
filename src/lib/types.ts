@@ -23,3 +23,7 @@ export interface PostPage {
   posts: PostData[];
   nextcursor: string | null;
 }
+export interface Followinfo {
+  followers: number;
+  isfollowingbyUser: boolean;
+}
