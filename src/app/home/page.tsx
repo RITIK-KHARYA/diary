@@ -7,6 +7,8 @@ import prisma from "@/lib/prisma";
 import ForYoufeed from "../(main)/ForYoufeed";
 import { QueryClient } from "@tanstack/react-query";
 import { error } from "console";
+import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
+import Followingfeed from "../(main)/Followingfeed";
 // import ForYoufeed from "../(main)/ForYoufeed";
 export default async function Home() {
   const user = await createUserToDb();
@@ -27,7 +29,18 @@ export default async function Home() {
             />
 
             <div className="">
-              <ForYoufeed />
+              <Tabs defaultValue="for-you">
+                <TabsList>
+                  <TabsTrigger value="for-you">for-you</TabsTrigger>
+                  <TabsTrigger value="following">following</TabsTrigger>
+                </TabsList>
+                <TabsContent value="for-you">
+                  <ForYoufeed />
+                </TabsContent>
+                <TabsContent value="following">
+                  <Followingfeed />
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </ScrollArea>
