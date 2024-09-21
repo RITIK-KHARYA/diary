@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { Followinfo } from "@/lib/types";
 import { log } from "console";
+import { revalidatePath } from "next/cache";
 export async function GET(
   req: Request,
   { params }: { params: { userid: string } }
@@ -14,7 +15,7 @@ export async function GET(
       });
     }
     const user = await prisma.user.findUnique({
-      where: { id: loggedinUser?.id }, //changed here
+      where: { id: params.userid }, //changed here
       select: {
         follower: {
           where: {
@@ -37,7 +38,7 @@ export async function GET(
 
     const data: Followinfo = {
       followers: user?._count.follower,
-      isfollowingbyUser: !!user?.follower.length,
+      isfollowedbyUser: !!user?.follower.length,
     };
     return Response.json(data);
   } catch (error) {
@@ -64,7 +65,7 @@ export async function POST(
         followerid_followingid: {
           followerid: loggedinUser?.id,
           followingid: userId,
-        }, //little understanding here
+        },
       },
       create: {
         followerid: loggedinUser?.id,
@@ -72,7 +73,8 @@ export async function POST(
       },
       update: {},
     });
-    return new Response();
+
+    return new Response("HEHE");
   } catch (error) {
     console.log("backend error probably post one", error);
     return Response.json({ error: "internal server error" }, { status: 500 });
@@ -90,14 +92,14 @@ export async function DELETE(
       return new Response(JSON.stringify({ error: "User not found" }), {
         status: 401,
       });
-
-      await prisma.follow.deleteMany({
-        where: {
-          followerid: loggedinUser?.id,
-          followingid: userId,
-        },
-      });
     }
+    await prisma.follow.deleteMany({
+      where: {
+        followerid: loggedinUser?.id,
+        followingid: userId,
+      },
+    });
+
     return new Response();
   } catch (error) {
     console.log("backend error probably post one", error);

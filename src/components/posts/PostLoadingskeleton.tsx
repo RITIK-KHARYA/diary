@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function PostsLoadingskeleton() {
   return (
-    <div>
+    <div className=" md:w-[500px] ">
       <PostLoadingskeleton />
       <PostLoadingskeleton />
       <PostLoadingskeleton />

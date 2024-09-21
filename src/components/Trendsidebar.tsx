@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
-
+import FollowerButton from "./FollowerButton";
+import { getUserDataSelect } from "@/lib/types";
+const fecthUsers = async () => {};
 export default async function Trendsidebar() {
   return (
     <div className="sticky top-[5.56rem] hidden h-fit flex-none md:block space-y-5 lg:w-80 rounded-lg border-2 border-neutral-500 bg-card p-5 mx-10 bg-neutral-900">
@@ -21,7 +23,24 @@ export default async function Trendsidebar() {
   async function Whotofollow() {
     const user = await currentUser();
 
-    if (!user) {
+    if (!user) return null;
+
+    const usersToFollow = await prisma.user.findMany({
+      where: {
+        NOT: {
+          id: user.id,
+        },
+        follower: {
+          none: {
+            followerid: user.id,
+          },
+        },
+      },
+      select: getUserDataSelect(user.id),
+      take: 5,
+    });
+    console.log(usersToFollow);
+    if (!usersToFollow) {
       return (
         <div className="text-center flex items-center justify-center">
           There are no available users
@@ -29,20 +48,6 @@ export default async function Trendsidebar() {
       );
     }
 
-    const usersToFollow = await prisma.user.findMany({
-      where: {
-        id: {
-          not: user.id,
-        },
-      },
-      select: {
-        id: true,
-        username: true,
-        displayname: true,
-        avatarurl: true,
-      },
-      take: 5, // Limit to 5 users
-    });
     return (
       <div className="">
         {usersToFollow.map((user) => (
@@ -67,9 +72,13 @@ export default async function Trendsidebar() {
               {user.displayname}
             </Link>
             <div className="flex w-[150px] justify-end items-center">
-              <Button className=" flex justify-between items-center text-white bg-blue-600 ">
-                Follow
-              </Button>
+              <FollowerButton
+                userid={user.id}
+                intialstate={{
+                  followers: user._count.follower,
+                  isfollowedbyUser: !!user.follower.length, //usne kuch aur kiya tha
+                }}
+              />
             </div>
           </div>
         ))}

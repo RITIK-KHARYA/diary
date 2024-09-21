@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { Postdataselect } from "@/lib/types";
+import { getPostDataInclude } from "@/lib/types";
 export default async function deletePost(id: string) {
   const user = await currentUser();
   if (!user) {
@@ -23,7 +23,7 @@ export default async function deletePost(id: string) {
     where: {
       id,
     },
-    include: Postdataselect,
+    include: getPostDataInclude(user.id),
   });
   return deletedPost;
 }

@@ -33,9 +33,9 @@ model User {
 
 model Follow {
   followerid  String 
-  follower  User  @relation("follower", fields: [followerid], references: [id],onDelete: Cascade )
+  follower  User  @relation("following", fields: [followerid], references: [id],onDelete: Cascade )
   followingid String 
-  following User  @relation("following", fields: [followingid], references: [id],onDelete: Cascade)
+  following User  @relation("follower", fields: [followingid], references: [id],onDelete: Cascade)
 
   @@unique([followerid, followingid])
   @@map("follows")

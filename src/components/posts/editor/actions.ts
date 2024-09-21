@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { createpostschema } from "@/lib/Validation";
 import { currentUser } from "@clerk/nextjs/server";
-import { Postdataselect } from "@/lib/types";
+import { getPostDataInclude } from "@/lib/types";
 
 export async function submitpost(input: string) {
   const user = await currentUser();
@@ -20,7 +20,7 @@ export async function submitpost(input: string) {
       content,
       userId: user.id,
     },
-    include: Postdataselect,
+    include: getPostDataInclude(user.id),
   });
 
   return newpost;

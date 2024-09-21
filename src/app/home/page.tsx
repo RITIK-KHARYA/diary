@@ -6,9 +6,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import prisma from "@/lib/prisma";
 import ForYoufeed from "../(main)/ForYoufeed";
 import { QueryClient } from "@tanstack/react-query";
+import { error } from "console";
 // import ForYoufeed from "../(main)/ForYoufeed";
 export default async function Home() {
   const user = await createUserToDb();
+  if (!user) {
+    throw error("User not found");
+  }
 
   return (
     <main className="w-full  mt-20  ">

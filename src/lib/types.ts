@@ -1,22 +1,39 @@
 import { Prisma } from "@prisma/client";
 import prisma from "./prisma";
 
-export const Userdataselect = {
-  id: true,
-  username: true,
-  displayname: true,
-  avatarurl: true,
-  email: true,
-} satisfies Prisma.UserSelect;
+export function getUserDataSelect(loggedInUserId: string) {
+  return {
+    id: true,
+    username: true,
+    displayname: true,
+    avatarurl: true,
+    email: true,
+    follower: {
+      where: {
+        followerid: loggedInUserId,
+      },
+      select: {
+        followerid: true,
+      },
+    },
+    _count: {
+      select: {
+        follower: true,
+      },
+    },
+  };
+}
 
-export const Postdataselect = {
-  user: {
-    select: Userdataselect,
-  },
-} satisfies Prisma.PostSelect;
+export function getPostDataInclude(loggedinUser: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedinUser),
+    },
+  } satisfies Prisma.PostInclude;
+}
 
 export type PostData = Prisma.PostGetPayload<{
-  include: typeof Postdataselect;
+  include: ReturnType<typeof getPostDataInclude>;
 }>;
 
 export interface PostPage {
@@ -25,5 +42,5 @@ export interface PostPage {
 }
 export interface Followinfo {
   followers: number;
-  isfollowingbyUser: boolean;
+  isfollowedbyUser: boolean;
 }
