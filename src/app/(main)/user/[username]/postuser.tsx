@@ -25,15 +25,17 @@ export default function Userpost({ userid }: userpostprops) {
     fetchNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["post-feed", "user-post", userid],
+    queryKey: ["user-post", userid],
+
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          `/api/user/${userid}/posts`,
+          `/api/posts/user/${userid}/posts`,
           pageParam ? { searchParams: { cursor: pageParam } } : {}
         )
         .json<PostPage>(),
     initialPageParam: null as string | null,
+
     getNextPageParam: (lastPage) => {
       return lastPage.nextcursor;
     },
@@ -63,7 +65,7 @@ export default function Userpost({ userid }: userpostprops) {
     <>
       {/* <DeletePostDialog post={posts[0]} open onClose={() => {}} /> */}
       <InfiniteScrollContainer
-        classname="space-y-3  "
+        classname="space-y-3 flex flex-col items-center justify-center "
         onBottomReached={() => hasNextPage && fetchNextPage()}
       >
         {posts.map((post) => (

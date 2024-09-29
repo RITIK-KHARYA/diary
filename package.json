@@ -30,6 +30,7 @@
     "@tiptap/pm": "^2.6.4",
     "@tiptap/react": "^2.6.4",
     "@tiptap/starter-kit": "^2.6.4",
+    "@types/bun": "^1.1.10",
     "@uploadthing/react": "^6.7.2",
     "arctic": "^1.9.2",
     "class-variance-authority": "^0.7.0",

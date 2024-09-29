@@ -8,6 +8,7 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
 import FollowerButton from "./FollowerButton";
 import { getUserDataSelect } from "@/lib/types";
+import UserTooltip from "./UserTooltip";
 const fecthUsers = async () => {};
 export default async function Trendsidebar() {
   return (
@@ -55,16 +56,18 @@ export default async function Trendsidebar() {
             key={user.id}
             className="text-white text-sm flex gap-x-3 items-center"
           >
-            <Link href={`/user/${user.username}`} className="cursor-pointer">
-              <div className=" flex justify-start items-start rounded-full">
-                <Avatar>
-                  <AvatarImage
-                    src={user.avatarurl || "https://github.com/shadcn.png"}
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </div>
-            </Link>
+            <UserTooltip user={user}>
+              <Link href={`/user/${user.username}`} className="cursor-pointer">
+                <div className=" flex justify-start items-start rounded-full">
+                  <Avatar>
+                    <AvatarImage
+                      src={user.avatarurl || "https://github.com/shadcn.png"}
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </div>
+              </Link>
+            </UserTooltip>
             <Link
               href={`/user/${user.username}`}
               className="cursor-pointer hover:underline"

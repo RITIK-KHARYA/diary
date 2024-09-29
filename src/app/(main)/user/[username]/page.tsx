@@ -10,12 +10,15 @@ import { Metadata } from "next";
 import useFollowerinfo from "@/hooks/useFollowerinfo";
 import Trendsidebar from "@/components/Trendsidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2 } from "lucide-react";
+import { Loader2, Scroll } from "lucide-react";
 import { formatDate, formatDistanceToNow } from "date-fns";
 import Userpost from "./postuser";
 import Followercounter from "@/components/followercounter";
 import { Button } from "@/components/ui/button";
 import FollowerButton from "@/components/FollowerButton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Navbar from "@/components/Navbar";
+import Menubar from "@/components/Menubar";
 interface pageprops {
   params: { username: string };
 }
@@ -56,17 +59,21 @@ export default async function Page({ params: { username } }: pageprops) {
   }
   const user = await getUser(username, loggedInUser.id);
   return (
-    <main className="flex w-full min-w-0 gap-5 flex-col">
-      <div className="w-full space-y-5 min-w-0 ">
-        <Userprofile user={user} logginUserId={loggedInUser.id} />
-      </div>
-      <div className="rounded-2xl bg-card p-5  shadow-sm">
-        <h2 className="text-center text-2xl font-bold">
-          {user.displayname} posts
-        </h2>
-      </div>
-      <Userpost userid={user.id} />
-      <div>
+    <main className="flex  w-full  flex-col">
+      <div className="w-full flex flex-row justify-center space-x-1">
+        <Menubar classname="sticky top-[5.5rem]  m-0 w-56 h-fit hidden sm:block px-3 py-8 space-y-4 border-2 border-zinc-800 bg-card rounded-xl flex-none shadow-xl divide-y-2 divide-zinc-800 " />
+        <div className="w-full h-full flex flex-col justify-center items-center">
+          <Userprofile user={user} logginUserId={loggedInUser.id} />
+          <ScrollArea className=" h-full w-full px-4  border-x-2 overflow-y-scroll">
+            <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full">
+              <h2 className="text-center text-2xl font-bold">
+                {user.displayname} posts
+              </h2>
+
+              <Userpost userid={user.id} />
+            </div>
+          </ScrollArea>
+        </div>
         <Trendsidebar />
       </div>
     </main>
@@ -86,7 +93,7 @@ export async function Userprofile({ user, logginUserId }: Userprofileprops) {
     ),
   };
   return (
-    <div className="h-fit w-full p-5 rounded-2xl bg-card space-y-5 shadow-sm mt-16 border ">
+    <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-16 border ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
         <AvatarImage
           src={user.avatarurl || "https://github.com/shadcn.png"}

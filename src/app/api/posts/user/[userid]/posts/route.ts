@@ -5,11 +5,12 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params: { userid: userId } }: { params: { userid: string } }
+  { params: { userid } }: { params: { userid: string } }
 ) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     console.log(cursor);
+    console.log(userid);
 
     const pageSize = 10;
 
@@ -20,8 +21,8 @@ export async function GET(
     }
 
     const posts = await prisma.post.findMany({
-      where: { userId },
-      include: getPostDataInclude(user.id),
+      where: { userId: userid },
+      include: getPostDataInclude(userid),
       orderBy: { createdAt: "desc" },
       take: pageSize + 1,
       cursor: cursor ? { id: cursor } : undefined,
@@ -33,7 +34,7 @@ export async function GET(
       posts: posts.slice(0, pageSize),
       nextcursor,
     };
-
+    console.log(data);
     return Response.json(data);
   } catch (error) {
     console.error("there is interal error", error), { status: 500 };
