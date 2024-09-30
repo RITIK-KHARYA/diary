@@ -46,7 +46,7 @@ export type PostData = Prisma.PostGetPayload<{
 
 export interface PostPage {
   posts: PostData[];
-  nextcursor: string | null;
+  nextCursor: string | null;
 }
 export interface Followinfo {
   followers: number;

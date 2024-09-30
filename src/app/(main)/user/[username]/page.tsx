@@ -19,6 +19,7 @@ import FollowerButton from "@/components/FollowerButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Navbar from "@/components/Navbar";
 import Menubar from "@/components/Menubar";
+import EditProfileButton from "@/app/api/username/[username]/EditProfileButton";
 interface pageprops {
   params: { username: string };
 }
@@ -127,7 +128,7 @@ export async function Userprofile({ user, logginUserId }: Userprofileprops) {
           </div>
         </div>
         {user.id === logginUserId ? (
-          <Button>Edit Profile</Button>
+          <EditProfileButton user={user} />
         ) : (
           <FollowerButton
             intialstate={followinfo}

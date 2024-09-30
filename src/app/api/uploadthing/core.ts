@@ -33,4 +33,4 @@ export const filerouter = {
     }),
 } satisfies FileRouter;
 
-export type AppFileRoute = typeof filerouter;
+export type AppFileRouter = typeof filerouter;

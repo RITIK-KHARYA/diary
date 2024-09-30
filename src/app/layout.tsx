@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -14,6 +15,8 @@ import Menubar from "@/components/Menubar";
 import Navbar from "@/components/Navbar";
 import { ModeToggle } from "@/components/toggle-mode";
 import ReactQueryProvider from "./ReactQueryProvider";
+import { filerouter } from "./api/uploadthing/core";
+import { extractRouterConfig } from "uploadthing/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +34,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className="overflow-hidden">
         <body className={inter.className + "overflow-hidden"}>
+          <NextSSRPlugin routerConfig={extractRouterConfig(filerouter)} />
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"
