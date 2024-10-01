@@ -22,7 +22,7 @@ export default function EditProfileButton({ user }: EditProfileButtonProps) {
       </Button>
       <EditprofileDialog
         open={showdialog}
-        onopenchange={setshowdialog}
+        onOpenChange={setshowdialog}
         user={user}
       />
     </>

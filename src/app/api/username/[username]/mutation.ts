@@ -1,6 +1,3 @@
-// this file is not understandable noted by the author(ritik)
-// need to revise this file before committing and if uploaded please ignore
-
 import { useToast } from "@/components/ui/use-toast";
 import { PostPage } from "@/lib/types";
 import { useUploadThing } from "@/lib/uploadthing";

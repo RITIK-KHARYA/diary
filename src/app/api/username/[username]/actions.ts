@@ -1,3 +1,4 @@
+"use server";
 import { getUserDataSelect } from "@/lib/types";
 import { currentUser } from "@clerk/nextjs/server";
 import { error } from "console";
