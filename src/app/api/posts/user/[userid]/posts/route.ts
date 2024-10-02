@@ -32,9 +32,9 @@ export async function GET(
 
     const data: PostPage = {
       posts: posts.slice(0, pageSize),
-      nextcursor,
+      nextCursor: nextcursor,
     };
-    console.log(data);
+    
     return Response.json(data);
   } catch (error) {
     console.error("there is interal error", error), { status: 500 };

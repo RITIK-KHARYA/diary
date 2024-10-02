@@ -13,7 +13,7 @@ export async function createUserToDb() {
       id: user.id,
     },
   });
-  console.log(existingUser);
+
   if (existingUser) {
     return existingUser;
   }

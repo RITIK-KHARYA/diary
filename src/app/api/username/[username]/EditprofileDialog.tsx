@@ -7,10 +7,13 @@ import { Dialog } from "@/components/ui/dialog";
 import updateuserprofile from "./actions";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
+import avatarplaceholder from "@/assets/avatar-placeholder.png";
 import {
   updateuserprofileValue,
   updateuserprofileschema,
 } from "@/lib/Validation";
+
+import Resizer from "react-image-file-resizer";
 import Image from "next/image";
 import { useUpdateProfileMutation } from "./mutation";
 import {
@@ -22,7 +25,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { StaticImageData } from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Camera } from "lucide-react";
+import CropimageDialog from "@/components/CropimageDialog";
 
 interface EditprofileDialogProps {
   open: boolean;
@@ -37,6 +42,7 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
       bio: user.bio || "",
     },
   });
+  const [croppedavatar, setcroppedavatar] = useState<Blob | null>(null);
   const mutation = useUpdateProfileMutation();
   async function onsubmit(value: updateuserprofileValue) {
     //implement latte
@@ -48,6 +54,16 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
+        <div>
+          <Avatarinput
+            src={
+              croppedavatar
+                ? URL.createObjectURL(croppedavatar)
+                : user.avatarurl || avatarplaceholder
+            }
+            onimagacropped={setcroppedavatar}
+          />
+        </div>
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onsubmit)}>
             <FormField
@@ -98,32 +114,68 @@ export function Avatarinput({ src, onimagacropped }: Avatarinputprops) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function onImageSelected(image: File | undefined) {
-    if (!image) {
-      return;
+    if (!image) return;
+    setimagetocropped(image);
 
-      // pending site for the image validation
-    }
+    Resizer.imageFileResizer(
+      image,
+      1024,
+      1024,
+      "WEBP",
+      100,
+      0,
+      (uri) => setimagetocropped(uri as File),
+
+      "file"
+    );
   }
+  function onImageCropped(e: React.ChangeEvent<HTMLInputElement>) {
+    onImageSelected(e.target.files?.[0]);
+  }
+  useEffect(() => {
+    console.log(imagetocrop);
+    console.log(fileInputRef.current?.files);
+    console.log(fileInputRef.current?.value);
+  }, [imagetocrop]);
   return (
     <>
       <input
         className="hidden sr-only"
-        type="button "
-        onChange={(e) => onImageSelected(e.target.files?.[0])}
+        type="file"
+        ref={fileInputRef}
+        onChange={onImageCropped}
         accept="image/*"
       />
       <button
         className="group relative block"
         type="button"
         onClick={() => fileInputRef.current?.click()}
-      />
-      <Image
-        src={src}
-        alt="avatar"
-        width={150}
-        height={150}
-        className=" flex-none size-32 object-cover rounded-full "
-      />
+      >
+        <Image
+          src={src}
+          alt="avatar"
+          width={150}
+          height={150}
+          className=" flex-none size-32 object-cover rounded-full flex flex-row justify-center "
+        />
+        <span className="flex inset-0 absolute size-12 items-center justify-center rounded-full m-auto opacity-90 bg-black/35 text-white  group-hover:opacity-25 ">
+          <Camera size={24} />
+        </span>
+      </button>
+
+      {imagetocrop && (
+        <CropimageDialog
+          image={URL.createObjectURL(imagetocrop)}
+          aspectratioimage={1}
+          onCropped={(blob) => onimagacropped(blob)}
+          onClose={() => {
+            setimagetocropped(undefined);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+          }}
+        />
+      )}
     </>
   );
 }

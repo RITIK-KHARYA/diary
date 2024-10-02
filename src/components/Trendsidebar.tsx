@@ -40,7 +40,7 @@ export default async function Trendsidebar() {
       select: getUserDataSelect(user.id),
       take: 5,
     });
-    console.log(usersToFollow);
+
     if (!usersToFollow) {
       return (
         <div className="text-center flex items-center justify-center">
