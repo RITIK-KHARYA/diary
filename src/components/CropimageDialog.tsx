@@ -22,7 +22,7 @@ export default function CropimageDialog({
   const croppedref = useRef<ReactCropperElement>(null);
   function crop() {
     const cropper = croppedref.current?.cropper;
-      console.log(croppedref);
+      console.log(croppedref, "here");
     
     if (!cropper) {
       return;

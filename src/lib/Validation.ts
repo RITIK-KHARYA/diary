@@ -7,7 +7,7 @@ export const createpostschema = z.object({
 });
 
 export const updateuserprofileschema = z.object({
-  displayName: requiredString,
+  displayname: requiredString,
   bio: z.string().max(1000, "max 1000 characters"),
 });
 

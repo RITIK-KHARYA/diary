@@ -1,4 +1,4 @@
-import { DialogHeader } from "@/components/ui/dialog";
+import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { UserData } from "@/lib/types";
 import * as zod from "@hookform/resolvers/zod";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -28,6 +28,9 @@ import { StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
 import CropimageDialog from "@/components/CropimageDialog";
+import { Button } from "@/components/ui/button";
+import { submitpost } from "@/components/posts/editor/actions";
+import LoadingButton from "@/components/ui/LoadingButton";
 
 interface EditprofileDialogProps {
   open: boolean;
@@ -38,14 +41,30 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
   const form = useForm<updateuserprofileValue>({
     resolver: zodResolver(updateuserprofileschema),
     defaultValues: {
-      displayName: user.displayname,
+      displayname: user.displayname,
       bio: user.bio || "",
     },
   });
   const [croppedavatar, setcroppedavatar] = useState<Blob | null>(null);
   const mutation = useUpdateProfileMutation();
-  async function onsubmit(value: updateuserprofileValue) {
-    //implement latte
+  async function onsubmit(values: updateuserprofileValue) {
+    const newAvatarfile = croppedavatar
+      ? new File([croppedavatar], `avatar_.${user.id}.webp`)
+      : undefined;
+    console.log(newAvatarfile);
+
+    mutation.mutate(
+      {
+        values,
+        avatar: newAvatarfile,
+      },
+      {
+        onSuccess: () => {
+          setcroppedavatar(null);
+          onOpenChange(false);
+        },
+      }
+    );
   }
 
   return (
@@ -54,7 +73,7 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
-        <div>
+        <div className="flex justify-center">
           <Avatarinput
             src={
               croppedavatar
@@ -68,7 +87,7 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
           <form className="space-y-8" onSubmit={form.handleSubmit(onsubmit)}>
             <FormField
               control={form.control}
-              name={"displayName"}
+              name={"displayname"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Display name</FormLabel>
@@ -95,7 +114,12 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
+            <DialogFooter>
+              <LoadingButton type="submit" loading={mutation.isPending}>
+                Save
+              </LoadingButton>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>
@@ -156,7 +180,7 @@ export function Avatarinput({ src, onimagacropped }: Avatarinputprops) {
           alt="avatar"
           width={150}
           height={150}
-          className=" flex-none size-32 object-cover rounded-full flex flex-row justify-center "
+          className=" flex-none size-32 object-cover rounded-full"
         />
         <span className="flex inset-0 absolute size-12 items-center justify-center rounded-full m-auto opacity-90 bg-black/35 text-white  group-hover:opacity-25 ">
           <Camera size={24} />

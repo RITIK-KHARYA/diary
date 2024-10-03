@@ -6,12 +6,13 @@ import { Prisma } from "@prisma/client";
 import { useAuth } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { FileRouter } from "uploadthing/next";
+import newavatarfile from "@/assets/newavatar.png";
 
 const f = createUploadthing();
 
 export const filerouter = {
   Avatar: f({
-    image: { maxFileSize: "512KB" },
+    image: { maxFileSize: "4MB" },
   })
     .middleware(async () => {
       const user = await currentUser();
@@ -23,12 +24,14 @@ export const filerouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       const newAvatarUrl = file.url.replace(
         "/f/",
-        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}`
+        `/a/${process.env.UPLOADTHING_APP_ID}/`
       );
+      console.log("avatar url", newAvatarUrl);
       await prisma.user.update({
         where: { id: metadata?.user.id },
         data: { avatarurl: newAvatarUrl },
       });
+      console.log("done");
       return { avatarUrl: newAvatarUrl };
     }),
 } satisfies FileRouter;
