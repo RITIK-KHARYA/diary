@@ -18,6 +18,7 @@ export async function createUserToDb() {
     return existingUser;
   }
 
+
   const newUser = await prisma.user.create({
     data: {
       id: user.id,

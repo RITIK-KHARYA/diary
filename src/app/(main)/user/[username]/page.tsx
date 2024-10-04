@@ -10,7 +10,7 @@ import { Metadata } from "next";
 import useFollowerinfo from "@/hooks/useFollowerinfo";
 import Trendsidebar from "@/components/Trendsidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Scroll } from "lucide-react";
+import { Loader2, Loader2Icon, Scroll } from "lucide-react";
 import { formatDate, formatDistanceToNow } from "date-fns";
 import Userpost from "./postuser";
 import Followercounter from "@/components/followercounter";
@@ -20,6 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Navbar from "@/components/Navbar";
 import Menubar from "@/components/Menubar";
 import EditProfileButton from "@/app/api/username/[username]/EditProfileButton";
+import { Loading } from "@clerk/elements/common";
 interface pageprops {
   params: { username: string };
 }
@@ -96,11 +97,13 @@ export async function Userprofile({ user, logginUserId }: Userprofileprops) {
   return (
     <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-16 border ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
+        <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
+          <Loader2></Loader2>
+        </AvatarFallback>
         <AvatarImage
           src={user.avatarurl || "https://github.com/shadcn.png"}
           sizes="2xl"
         />
-        <AvatarFallback>cn</AvatarFallback>
       </Avatar>
       <div className="flex gap-3 sm:flex-nowrap bg-card shadow-sm ">
         <div className="me-auto space-y-3">

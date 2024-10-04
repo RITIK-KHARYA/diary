@@ -154,6 +154,7 @@ export function Avatarinput({ src, onimagacropped }: Avatarinputprops) {
     );
   }
   function onImageCropped(e: React.ChangeEvent<HTMLInputElement>) {
+    //the props provided here
     onImageSelected(e.target.files?.[0]);
   }
   useEffect(() => {
@@ -166,7 +167,7 @@ export function Avatarinput({ src, onimagacropped }: Avatarinputprops) {
       <input
         className="hidden sr-only"
         type="file"
-        ref={fileInputRef}
+        ref={fileInputRef} //useref used here for the sight for the author
         onChange={onImageCropped}
         accept="image/*"
       />

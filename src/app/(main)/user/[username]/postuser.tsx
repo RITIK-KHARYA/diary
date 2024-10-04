@@ -37,7 +37,7 @@ export default function Userpost({ userid }: userpostprops) {
     initialPageParam: null as string | null,
 
     getNextPageParam: (lastPage) => {
-      return lastPage.nextcursor;
+      return lastPage.nextCursor;
     },
   });
 

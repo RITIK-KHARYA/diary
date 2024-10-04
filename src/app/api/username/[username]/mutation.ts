@@ -57,7 +57,7 @@ export function useUpdateProfileMutation() {
                     ...post,
                     user: {
                       ...updatedUser,
-                      avatarUrl: newAvatarUrl || updatedUser.avatarurl,
+                      avatarurl: newAvatarUrl || updatedUser.avatarurl,
                     },
                   };
                 }
