@@ -5,20 +5,28 @@ import { revalidatePath } from "next/cache";
 import { createpostschema } from "@/lib/Validation";
 import { currentUser } from "@clerk/nextjs/server";
 import { getPostDataInclude } from "@/lib/types";
+import { connect } from "http2";
 
-export async function submitpost(input: string) {
+export async function submitpost(input: {
+  content: string;
+  mediaIds: string[];
+}) {
   const user = await currentUser();
 
   if (!user) {
     throw new Error("User not found");
   }
-  const { content } = createpostschema.parse({ content: input });
+  const { content, mediaIds } = createpostschema.parse({ input });
 
   const newpost = await prisma.post.create({
     data: {
-      title: " ",
+      //title: "",
       content,
       userId: user.id,
+
+      attachments: {
+        connect: mediaIds.map((id) => ({ id })),
+      },
     },
     include: getPostDataInclude(user.id),
   });
