@@ -20,12 +20,11 @@ export async function submitpost(input: {
 
   const newpost = await prisma.post.create({
     data: {
-      //title: "",
+      title: "",
       content,
       userId: user.id,
-
       attachments: {
-        connect: mediaIds.map((id) => ({ id })),
+        connect: mediaIds.map((mediaId) => ({ id: mediaId })),
       },
     },
     include: getPostDataInclude(user.id),

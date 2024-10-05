@@ -30,7 +30,7 @@ export default function Followingfeed() {
         .json<PostPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => {
-      return lastPage.nextcursor;
+      return lastPage.nextCursor;
     },
   });
 

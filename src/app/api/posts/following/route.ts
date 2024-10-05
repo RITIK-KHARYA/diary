@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     const nextcursor = posts.length > pageSize ? posts[pageSize].id : null;
     const data: PostPage = {
       posts: posts.slice(0, pageSize),
-      nextcursor,
+      nextCursor: nextcursor,
     };
     return Response.json(data);
   } catch (error) {
