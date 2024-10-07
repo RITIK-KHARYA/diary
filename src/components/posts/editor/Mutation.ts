@@ -34,7 +34,7 @@ export default function useSubmitpostMutation() {
               pages: [
                 {
                   posts: [newpost, ...firstpage.posts],
-                  nextcursor: firstpage.nextcursor,
+                  nextCursor: firstpage.nextCursor,
                 },
                 ...olddata?.pages.slice(1),
               ],

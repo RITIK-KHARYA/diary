@@ -39,7 +39,7 @@ export default function useDeletePostMdutation() {
           return {
             pageParams: olddata.pageParams,
             pages: olddata.pages.map((page) => ({
-              nextcursor: page.nextcursor, //yeha todha kaam smjh aaya//
+              nextCursor: page.nextCursor, //yeha todha kaam smjh aaya//
               posts: page.posts.filter((post) => post.id !== deletedPost.id),
             })),
           };

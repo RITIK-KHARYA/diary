@@ -10,6 +10,12 @@ import "./style.css";
 import useSubmitpostMutation from "./Mutation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
+import useMediaUpload from "./useMediaUpload";
+import { useRef } from "react";
+import { ImageIcon, icons } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+
 
 // interface SubmitPostMutation {
 //   mutate: (input: string, options: any) => void;
@@ -17,6 +23,14 @@ import { useMutation } from "@tanstack/react-query";
 export default function PostEditor(avatar: { avatar: string }) {
   const mutation = useSubmitpostMutation();
   const avatarurl = avatar.avatar;
+  const {
+    startUpload: handleStartUpload,
+    attachment,
+    isUploading,
+    uploadProgress,
+    removeAttachment,
+    reset: resetMedia,
+  } = useMediaUpload();
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -35,12 +49,19 @@ export default function PostEditor(avatar: { avatar: string }) {
     }) || "";
 
   function onSubmit() {
-    mutation.mutate(input, {
-      onSuccess: () => {
-        console.log("success");
-        editor?.commands.clearContent();
+    mutation.mutate(
+      {
+        content: input,
+        mediaIds: attachment.map((a) => a.mediaIds).filter(Boolean) as string[],
       },
-    });
+      {
+        onSuccess: () => {
+          console.log("success");
+          editor?.commands.clearContent();
+          resetMedia();
+        },
+      }
+    );
     editor?.commands.clearContent();
   }
   return (
@@ -71,3 +92,57 @@ export default function PostEditor(avatar: { avatar: string }) {
     </div>
   );
 }
+
+// interface addAttachmentButtonProps {
+//   onFileselected: (file: File[]) => void,
+//   disabled: boolean;
+// }
+
+// function addAttachmentButton({ onFileselected, disabled }: addAttachmentButtonProps) {
+//   const fileInputref = useRef<HTMLInputElement>(null)
+
+//   return (
+//     <>
+//       <Button onClick={() => fileInputref.current?.click()} className="text-primary hover:text-primary" variant="ghost" size="icon">
+//         <ImageIcon size="icon"/>
+//       </Button>
+//       <input className="sr-only " type="file" accept="image/*,video/*" multiple ref={fileInputref} onChange={(e) => {
+//         const files = Array.from(e.target.files || []);
+//         if (files.length) {
+//           onFileselected(files);
+//           e.target.value=""                     //not understandable need to revise again 
+//         }
+//       }} >
+//       </input >
+//     </>
+//   );
+ 
+  
+// }
+// interface AttachmentPreviewProps{
+//   Attachment: Attachment;          // check on this motherfucker 
+//   onRemoveclick: boolean;
+// }
+// function AttachmentPreview({
+
+//   Attachment:{file , mediaid , isUploading},
+//   onRemoveclick
+// }: AttachmentPreviewProps) {
+//     const src = URL.createObjectURL(file);
+//   return (
+//     <>
+//       <div className={cn("relative mx-auto size-fit ", isUploading && "opacity-50")}>
+//         {file.type.startWith("image") ? (
+//         <Image className=" size-fit max-h-{30rem} rounded-2xl " src={src} width={500} height={500} alt="attachment preview"/>
+//         ) : (
+//             <video controls className="size-fit max-h-{30rem} rounded-2xl ">
+//               <source src={src} type={file.type} />
+//             </video>
+//         )}
+        
+//     </div>
+//     </>
+//   )
+
+  
+// }
