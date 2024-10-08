@@ -19,7 +19,7 @@ export default function useSubmitpostMutation() {
       };
 
       await queryclient.cancelQueries(queryFilter);
-      //lund kuch smajh aaya ye
+
 
       queryclient.setQueriesData<InfiniteData<PostPage, string | null>>(
         queryFilter,

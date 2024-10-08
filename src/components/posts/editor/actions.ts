@@ -16,7 +16,7 @@ export async function submitpost(input: {
   if (!user) {
     throw new Error("User not found");
   }
-  const { content, mediaIds } = createpostschema.parse({ input });
+  const { content, mediaIds } = createpostschema.parse(input);
 
   const newpost = await prisma.post.create({
     data: {

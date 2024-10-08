@@ -1,4 +1,4 @@
-import { Post as Postdata } from "@prisma/client";
+import { Media, Post as Postdata } from "@prisma/client";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
@@ -8,6 +8,8 @@ import { PostData, PostPage } from "@/lib/types";
 import { useAuth } from "@clerk/nextjs";
 import Linkfy from "../Linkfy";
 import UserTooltip from "../UserTooltip";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface PostProps {
   post: PostData;
@@ -64,6 +66,56 @@ export default function Post({ post }: PostProps) {
           </div>
         </div>
       </div>
+      {!!post.attachments.length && (
+        <MediaPreviews attachments={post.attachments} />
+      )}
     </article>
   );
+}
+
+interface MediaPreviewsProps {
+  attachments: Media[];
+}
+function MediaPreviews({ attachments }: MediaPreviewsProps) {
+  return (
+    <div
+      className={cn(
+        "flex flex-wrap gap-3",
+        attachments.length > 1 && "sm:grid sm:grid-cols-2"
+      )}
+    >
+      {attachments.map((m) => (
+        <MediaPreview key={m.id} media={m} />
+      ))}
+    </div>
+  );
+}
+
+interface MediaPreviewProps {
+  media: Media;
+}
+function MediaPreview({ media }: MediaPreviewProps) {
+  if (media.type === "IMAGE") {
+    return (
+      <Image
+        src={media.url}
+        className="rounded-2xl mx-auto size-fit max-h-[30rem]"
+        width={500}
+        height={500}
+        alt="attachment"
+      />
+    );
+  }
+  if (media.type === "VIDEO") {
+    return (
+      <div>
+        <video
+          className="rounded-2xl mx-auto size-fit max-h-[30rem]"
+          controls
+          src={media.url}
+        />
+      </div>
+    );
+  }
+  return <p className="text-destructive">Unsupported media type</p>;
 }

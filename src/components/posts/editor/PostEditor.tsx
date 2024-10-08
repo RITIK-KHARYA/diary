@@ -11,8 +11,8 @@ import useSubmitpostMutation from "./Mutation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
 import useMediaUpload, { attachment } from "./useMediaUpload";
-import { useRef } from "react";
-import { ImageIcon, X, icons } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { ImageIcon, Loader2, X, icons } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { AttachmentPreviewList } from "stream-chat-react";
@@ -31,6 +31,7 @@ export default function PostEditor(avatar: { avatar: string }) {
     removeAttachment,
     reset: resetMedia,
   } = useMediaUpload();
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -64,6 +65,9 @@ export default function PostEditor(avatar: { avatar: string }) {
     );
     editor?.commands.clearContent();
   }
+  // useEffect(() => {
+  //   console.log(attachment.length);
+  // }, [attachment]);
   return (
     // w-[calc(100%-20px)]
     <div className="flex w-full flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
@@ -77,12 +81,19 @@ export default function PostEditor(avatar: { avatar: string }) {
           className="w-full text-white overflow-y-auto bg-background rounded-2xl px-4 py-4 "
         />
       </div>
-      {/* {!!attachment.length && (
+      {!!attachment.length && (
         <AttachmentPreviews
-          attachment={attachment}
-        removeAttachment={removeAttachment}/>
-      )} */}
+          attachments={attachment}
+          onremoveclick={removeAttachment}
+        />
+      )}
       <div className="justify-end flex gap-3 items-center ">
+        {!!isUploading && (
+          <>
+            <span className="text-sm ">{uploadProgress ?? 0}% </span>
+            <Loader2 className="animate-spin text-primary size-5" />
+          </>
+        )}
         <AddAttachmentButton
           onFileselected={startUpload}
           disabled={isUploading || attachment.length >= 5}
@@ -133,82 +144,82 @@ function AddAttachmentButton({
           const files = Array.from(e.target.files || []);
           if (files.length) {
             onFileselected(files);
-            e.target.value = ""; //not understandable need to revise again
+            e.target.value = "";
           }
         }}
       ></input>
     </>
   );
+}
+interface Attachmentpreviewsprops {
+  attachments: attachment[];
+  onremoveclick: (filename: string) => void;
+}
+function AttachmentPreviews({
+  attachments,
+  onremoveclick,
+}: Attachmentpreviewsprops) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3",
+        attachments.length > 1 && "sm:grid sm:grid-cols-2"
+      )}
+    >
+      {attachments.map((attachment) => (
+        <AttachmentPreview
+          key={attachment.file.name}
+          Attachment={attachment}
+          onRemoveclick={() => onremoveclick(attachment.file.name)}
+        />
+      ))}
+    </div>
+  );
+}
 
-  interface attachmentpreviewsprops {
-    attachments: attachment[];
-    onremoveclick: (filename: string) => void;
-  }
-  function Attachmentpreviews({
-    attachments,
-    onremoveclick,
-  }: attachmentpreviewsprops) {
-    return (
+interface AttachmentPreviewProps {
+  Attachment: attachment;
+  onRemoveclick: () => void;
+  key: string;
+}
+function AttachmentPreview({
+  Attachment: { file, mediaIds, isUploading },
+  onRemoveclick,
+  key,
+}: AttachmentPreviewProps) {
+  const src = URL.createObjectURL(file);
+  return (
+    <>
       <div
+        key={key}
         className={cn(
-          "flex flex-col gap-3",
-          attachments.length > 1 && "sm:grid sm:grid-cols-2"
+          "relative mx-auto size-fit ",
+          isUploading && "opacity-50"
         )}
       >
-        {attachments.map((attachment) => (
-          <AttachmentPreview
-            key={attachment.file.name}
-            Attachment={attachment}
-            onRemoveclick={() => onremoveclick(attachment.file.name)}
+        {file.type.startsWith("image") ? (
+          <Image
+            className=" size-fit max-h-{30rem} rounded-2xl "
+            src={src}
+            width={500}
+            height={500}
+            alt="attachment preview"
           />
-        ))}
+        ) : (
+          <video controls className="size-fit max-h-{30rem} rounded-2xl ">
+            <source src={src} type={file.type} />
+          </video>
+        )}
+        {!isUploading && (
+          <Button
+            className=" absolute right-3 top-3 rounded-full bg-foreground p-1.5 transition-colors hover:bg-muted "
+            onClick={onRemoveclick}
+          >
+            <X size={20} className="hover:text-foreground" /> 
+          </Button>
+        )}
       </div>
-    );
-  }
-
-  interface AttachmentPreviewProps {
-    Attachment: attachment;
-    onRemoveclick: () => void;
-    key: string;
-  }
-  function AttachmentPreview({
-    Attachment: { file, mediaIds, isUploading },
-    onRemoveclick,
-    key,
-  }: AttachmentPreviewProps) {
-    const src = URL.createObjectURL(file);
-    return (
-      <>
-        <div
-          key={key}
-          className={cn(
-            "relative mx-auto size-fit ",
-            isUploading && "opacity-50"
-          )}
-        >
-          {file.type.startsWith("image") ? (
-            <Image
-              className=" size-fit max-h-{30rem} rounded-2xl "
-              src={src}
-              width={500}
-              height={500}
-              alt="attachment preview"
-            />
-          ) : (
-            <video controls className="size-fit max-h-{30rem} rounded-2xl ">
-              <source src={src} type={file.type} />
-            </video>
-          )}
-          {!isUploading && (
-            <Button
-              className=" absolute right-3 top-3 rounded-full bg-foreground p-1.5 transition-colors hover:bg-muted "
-              onClick={onRemoveclick}
-            >
-              <X size={20} />
-            </Button>
-          )}
-        </div>
-      </>
-    );
-  }
+    </>
+  );
 }
+//line 218 
