@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { Files } from "lucide-react";
 import { useState } from "react";
 
-interface attachment {
+export interface attachment {
   mediaIds?: string;
   isUploading: boolean;
   file: File;

@@ -10,12 +10,12 @@ import "./style.css";
 import useSubmitpostMutation from "./Mutation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
-import useMediaUpload from "./useMediaUpload";
+import useMediaUpload, { attachment } from "./useMediaUpload";
 import { useRef } from "react";
-import { ImageIcon, icons } from "lucide-react";
+import { ImageIcon, X, icons } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
+import { AttachmentPreviewList } from "stream-chat-react";
 
 // interface SubmitPostMutation {
 //   mutate: (input: string, options: any) => void;
@@ -24,7 +24,7 @@ export default function PostEditor(avatar: { avatar: string }) {
   const mutation = useSubmitpostMutation();
   const avatarurl = avatar.avatar;
   const {
-    startUpload: handleStartUpload,
+    startUpload,
     attachment,
     isUploading,
     uploadProgress,
@@ -52,7 +52,7 @@ export default function PostEditor(avatar: { avatar: string }) {
     mutation.mutate(
       {
         content: input,
-        mediaIds: attachment.map((a) => a.mediaIds).filter(Boolean) as string[],
+        mediaIds: attachment.map((a) => a.mediaIds).filter(Boolean) as string[], //to filter out the null value of the array of mediaids
       },
       {
         onSuccess: () => {
@@ -77,7 +77,16 @@ export default function PostEditor(avatar: { avatar: string }) {
           className="w-full text-white overflow-y-auto bg-background rounded-2xl px-4 py-4 "
         />
       </div>
-      <div className="justify-end flex">
+      {/* {!!attachment.length && (
+        <AttachmentPreviews
+          attachment={attachment}
+        removeAttachment={removeAttachment}/>
+      )} */}
+      <div className="justify-end flex gap-3 items-center ">
+        <AddAttachmentButton
+          onFileselected={startUpload}
+          disabled={isUploading || attachment.length >= 5}
+        />
         <LoadingButton
           className="bg-green-600/90 rounded-md w-1/5 h-8 text-white disabled:bg-green-600/50 disabled:cursor-not-allowed disabled:text-muted-foreground"
           onClick={onSubmit}
@@ -93,56 +102,113 @@ export default function PostEditor(avatar: { avatar: string }) {
   );
 }
 
-// interface addAttachmentButtonProps {
-//   onFileselected: (file: File[]) => void,
-//   disabled: boolean;
-// }
+interface AddAttachmentButtonProps {
+  onFileselected: (file: File[]) => void;
+  disabled: boolean;
+}
 
-// function addAttachmentButton({ onFileselected, disabled }: addAttachmentButtonProps) {
-//   const fileInputref = useRef<HTMLInputElement>(null)
+function AddAttachmentButton({
+  onFileselected,
+  disabled,
+}: AddAttachmentButtonProps) {
+  const fileInputref = useRef<HTMLInputElement>(null);
 
-//   return (
-//     <>
-//       <Button onClick={() => fileInputref.current?.click()} className="text-primary hover:text-primary" variant="ghost" size="icon">
-//         <ImageIcon size="icon"/>
-//       </Button>
-//       <input className="sr-only " type="file" accept="image/*,video/*" multiple ref={fileInputref} onChange={(e) => {
-//         const files = Array.from(e.target.files || []);
-//         if (files.length) {
-//           onFileselected(files);
-//           e.target.value=""                     //not understandable need to revise again 
-//         }
-//       }} >
-//       </input >
-//     </>
-//   );
- 
-  
-// }
-// interface AttachmentPreviewProps{
-//   Attachment: Attachment;          // check on this motherfucker 
-//   onRemoveclick: boolean;
-// }
-// function AttachmentPreview({
+  return (
+    <>
+      <Button
+        onClick={() => fileInputref.current?.click()}
+        className="text-primary hover:text-primary "
+        variant="ghost"
+        size="icon"
+      >
+        <ImageIcon size="icon" className="size-6 " />
+      </Button>
+      <input
+        className="sr-only "
+        type="file"
+        accept="image/*,video/*"
+        multiple
+        ref={fileInputref}
+        onChange={(e) => {
+          const files = Array.from(e.target.files || []);
+          if (files.length) {
+            onFileselected(files);
+            e.target.value = ""; //not understandable need to revise again
+          }
+        }}
+      ></input>
+    </>
+  );
 
-//   Attachment:{file , mediaid , isUploading},
-//   onRemoveclick
-// }: AttachmentPreviewProps) {
-//     const src = URL.createObjectURL(file);
-//   return (
-//     <>
-//       <div className={cn("relative mx-auto size-fit ", isUploading && "opacity-50")}>
-//         {file.type.startWith("image") ? (
-//         <Image className=" size-fit max-h-{30rem} rounded-2xl " src={src} width={500} height={500} alt="attachment preview"/>
-//         ) : (
-//             <video controls className="size-fit max-h-{30rem} rounded-2xl ">
-//               <source src={src} type={file.type} />
-//             </video>
-//         )}
-        
-//     </div>
-//     </>
-//   )
+  interface attachmentpreviewsprops {
+    attachments: attachment[];
+    onremoveclick: (filename: string) => void;
+  }
+  function Attachmentpreviews({
+    attachments,
+    onremoveclick,
+  }: attachmentpreviewsprops) {
+    return (
+      <div
+        className={cn(
+          "flex flex-col gap-3",
+          attachments.length > 1 && "sm:grid sm:grid-cols-2"
+        )}
+      >
+        {attachments.map((attachment) => (
+          <AttachmentPreview
+            key={attachment.file.name}
+            Attachment={attachment}
+            onRemoveclick={() => onremoveclick(attachment.file.name)}
+          />
+        ))}
+      </div>
+    );
+  }
 
-  
-// }
+  interface AttachmentPreviewProps {
+    Attachment: attachment;
+    onRemoveclick: () => void;
+    key: string;
+  }
+  function AttachmentPreview({
+    Attachment: { file, mediaIds, isUploading },
+    onRemoveclick,
+    key,
+  }: AttachmentPreviewProps) {
+    const src = URL.createObjectURL(file);
+    return (
+      <>
+        <div
+          key={key}
+          className={cn(
+            "relative mx-auto size-fit ",
+            isUploading && "opacity-50"
+          )}
+        >
+          {file.type.startsWith("image") ? (
+            <Image
+              className=" size-fit max-h-{30rem} rounded-2xl "
+              src={src}
+              width={500}
+              height={500}
+              alt="attachment preview"
+            />
+          ) : (
+            <video controls className="size-fit max-h-{30rem} rounded-2xl ">
+              <source src={src} type={file.type} />
+            </video>
+          )}
+          {!isUploading && (
+            <Button
+              className=" absolute right-3 top-3 rounded-full bg-foreground p-1.5 transition-colors hover:bg-muted "
+              onClick={onRemoveclick}
+            >
+              <X size={20} />
+            </Button>
+          )}
+        </div>
+      </>
+    );
+  }
+}
