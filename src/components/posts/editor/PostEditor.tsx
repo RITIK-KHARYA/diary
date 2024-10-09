@@ -16,6 +16,7 @@ import { ImageIcon, Loader2, X, icons } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { AttachmentPreviewList } from "stream-chat-react";
+import { UploadDropzone, useDropzone } from "@uploadthing/react";
 
 // interface SubmitPostMutation {
 //   mutate: (input: string, options: any) => void;
@@ -31,6 +32,12 @@ export default function PostEditor(avatar: { avatar: string }) {
     removeAttachment,
     reset: resetMedia,
   } = useMediaUpload();
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: startUpload,
+  });
+
+  const { onClick, ...rootProps } = getRootProps();
 
   const editor = useEditor({
     extensions: [
@@ -78,10 +85,16 @@ export default function PostEditor(avatar: { avatar: string }) {
           <AvatarImage src={avatarurl} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <EditorContent
-          editor={editor}
-          className="w-full text-white overflow-y-auto bg-background rounded-2xl px-4 py-4 "
-        />
+        <div {...rootProps} className="w-full">
+          <EditorContent
+            editor={editor}
+            className={cn(
+              "w-full text-white overflow-y-auto bg-background rounded-2xl px-4 py-4 ",
+              isDragActive && "outline-dashed"
+            )}
+          />
+          <input {...getInputProps()} />
+        </div>
       </div>
       {!!attachment.length && (
         <AttachmentPreviews
