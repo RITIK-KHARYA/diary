@@ -10,6 +10,7 @@ import Linkfy from "../Linkfy";
 import UserTooltip from "../UserTooltip";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 interface PostProps {
   post: PostData;
@@ -17,14 +18,17 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
+  useEffect(() => {
+    console.log("attachment rendered successfully");
+  }, []);
 
   return (
     <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-[500px]">
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-3 item-start">
         <div className="flex   gap-5">
           <UserTooltip user={post.user}>
             <Link href={"/"}>
-              <Avatar>
+              <Avatar className="">
                 <AvatarImage
                   src={post.user.avatarurl || "https://github.com/shadcn.png"}
                 ></AvatarImage>
@@ -58,17 +62,16 @@ export default function Post({ post }: PostProps) {
               )}
             </div>
             <Linkfy>
-              {" "}
-              <div className=" whitespace-pre-line break-words  flex w-[350px] break-all">
+              <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
                 {post.content}
               </div>
+              {post.attachments.length > 0 && (
+                <MediaPreviews attachments={post.attachments} />
+              )}
             </Linkfy>
           </div>
         </div>
       </div>
-      {!!post.attachments.length && (
-        <MediaPreviews attachments={post.attachments} />
-      )}
     </article>
   );
 }
@@ -80,7 +83,7 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
   return (
     <div
       className={cn(
-        "flex flex-wrap gap-3",
+        "flex flex-col gap-3",
         attachments.length > 1 && "sm:grid sm:grid-cols-2"
       )}
     >
@@ -99,23 +102,25 @@ function MediaPreview({ media }: MediaPreviewProps) {
     return (
       <Image
         src={media.url}
-        className="rounded-2xl mx-auto size-fit max-h-[30rem]"
+        alt="Attachment"
         width={500}
         height={500}
-        alt="attachment"
+        className="mx-auto size-fit max-h-[30rem] rounded-2xl"
       />
     );
   }
+
   if (media.type === "VIDEO") {
     return (
       <div>
         <video
-          className="rounded-2xl mx-auto size-fit max-h-[30rem]"
-          controls
           src={media.url}
+          controls
+          className="mx-auto size-fit max-h-[30rem] rounded-2xl"
         />
       </div>
     );
   }
+
   return <p className="text-destructive">Unsupported media type</p>;
 }

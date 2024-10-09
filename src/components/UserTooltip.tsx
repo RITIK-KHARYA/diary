@@ -30,7 +30,10 @@ export default function ({ children, user }: UserTooltipProps) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger> {children}</TooltipTrigger>
+        <TooltipTrigger className="flex items-start">
+          {" "}
+          {children}
+        </TooltipTrigger>
         <TooltipContent>
           <div className="break-words flex-col max-w-80 flex gap-3 md:min-w-52 px-1 py-2.5 bg-card rounded-xl">
             <div className="flex items-center justify-center">

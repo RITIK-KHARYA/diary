@@ -11,7 +11,7 @@ import useSubmitpostMutation from "./Mutation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
 import useMediaUpload, { attachment } from "./useMediaUpload";
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import { ImageIcon, Loader2, X, icons } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -53,7 +53,7 @@ export default function PostEditor(avatar: { avatar: string }) {
     mutation.mutate(
       {
         content: input,
-        mediaIds: attachment.map((a) => a.mediaIds).filter(Boolean) as string[], //to filter out the null value of the array of mediaids
+        mediaIds: attachment.map((a) => a.mediaId).filter(Boolean) as string[], //to filter out the null value of the array of mediaids
       },
       {
         onSuccess: () => {
@@ -65,13 +65,15 @@ export default function PostEditor(avatar: { avatar: string }) {
     );
     editor?.commands.clearContent();
   }
-  // useEffect(() => {
-  //   console.log(attachment.length);
-  // }, [attachment]);
+  useEffect(() => {
+    console.log(attachment);
+    console.log(attachment.map((a) => a.mediaId).filter(Boolean));
+  }, [attachment]);
+
   return (
     // w-[calc(100%-20px)]
-    <div className="flex w-full flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
-      <div className="w-full flex space-x-2 ">
+    <div className="flex w-[500px] flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
+      <div className="w-[478px] flex space-x-2 ">
         <Avatar className="mt-2  h-10 w-10 cursor-pointer ">
           <AvatarImage src={avatarurl} />
           <AvatarFallback>CN</AvatarFallback>
@@ -103,7 +105,7 @@ export default function PostEditor(avatar: { avatar: string }) {
           onClick={onSubmit}
           loading={mutation.isPending}
           // loading={mutation.isLoading}
-          disabled={!input.trim()}
+          disabled={!input.trim() || isUploading}
         >
           Post
         </LoadingButton>{" "}
@@ -183,7 +185,7 @@ interface AttachmentPreviewProps {
   key: string;
 }
 function AttachmentPreview({
-  Attachment: { file, mediaIds, isUploading },
+  Attachment: { file, mediaId, isUploading },
   onRemoveclick,
   key,
 }: AttachmentPreviewProps) {
@@ -215,7 +217,7 @@ function AttachmentPreview({
             className=" absolute right-3 top-3 rounded-full bg-foreground p-1.5 transition-colors hover:bg-muted "
             onClick={onRemoveclick}
           >
-            <X size={20} className="hover:text-foreground" /> 
+            <X size={20} className="hover:text-foreground" />
           </Button>
         )}
       </div>

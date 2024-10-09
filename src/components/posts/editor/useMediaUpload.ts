@@ -7,7 +7,7 @@ import { Files } from "lucide-react";
 import { useState } from "react";
 
 export interface attachment {
-  mediaIds?: string;
+  mediaId?: string;
   isUploading: boolean;
   file: File;
 }
