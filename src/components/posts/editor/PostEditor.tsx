@@ -11,12 +11,13 @@ import useSubmitpostMutation from "./Mutation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
 import useMediaUpload, { attachment } from "./useMediaUpload";
-import { use, useEffect, useRef } from "react";
+import { ClipboardEvent, use, useEffect, useRef } from "react";
 import { ImageIcon, Loader2, X, icons } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { AttachmentPreviewList } from "stream-chat-react";
 import { UploadDropzone, useDropzone } from "@uploadthing/react";
+import { file } from "bun";
 
 // interface SubmitPostMutation {
 //   mutate: (input: string, options: any) => void;
@@ -77,6 +78,13 @@ export default function PostEditor(avatar: { avatar: string }) {
     console.log(attachment.map((a) => a.mediaId).filter(Boolean));
   }, [attachment]);
 
+  function onPaste(e: ClipboardEvent<HTMLInputElement>) {
+    const files = Array.from(e.clipboardData.items)
+      .filter((item) => item.kind === "file")
+      .map((item) => item.getAsFile()) as File[];
+    startUpload(files);
+  }
+
   return (
     // w-[calc(100%-20px)]
     <div className="flex w-[500px] flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
@@ -92,6 +100,7 @@ export default function PostEditor(avatar: { avatar: string }) {
               "w-full text-white overflow-y-auto bg-background rounded-2xl px-4 py-4 ",
               isDragActive && "outline-dashed"
             )}
+            onPaste={onPaste}
           />
           <input {...getInputProps()} />
         </div>
