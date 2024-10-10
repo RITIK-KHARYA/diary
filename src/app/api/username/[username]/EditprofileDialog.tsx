@@ -7,7 +7,7 @@ import { Dialog } from "@/components/ui/dialog";
 import updateuserprofile from "./actions";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import avatarplaceholder from "@/assets/avatar-placeholder.png";
+import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import {
   updateuserprofileValue,
   updateuserprofileschema,
@@ -78,7 +78,7 @@ export default function ({ open, onOpenChange, user }: EditprofileDialogProps) {
             src={
               croppedavatar
                 ? URL.createObjectURL(croppedavatar)
-                : user.avatarurl || avatarplaceholder
+                : user.avatarurl || avatarPlaceholder
             }
             onimagacropped={setcroppedavatar}
           />
