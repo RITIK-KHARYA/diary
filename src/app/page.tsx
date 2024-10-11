@@ -1,57 +1,48 @@
-import Navbar from "@/components/Navbar";
+import { BackgroundLines } from "@/components/ui/background-lines";
 import { Button } from "@/components/ui/button";
-import { SignInButton, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
-import Image from "next/image";
 import { currentUser } from "@clerk/nextjs/server";
+import Link from "next/link";
+import LInk from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function Home() {
-  const user = await currentUser();
-  if (user) {
-    redirect("/home");
+export default function Landingpage() {
+  const user = currentUser();
+  if (!user) {
+    redirect("/sign-in");
   }
 
   return (
-    <div>
-      <div>
-        <Navbar />
-      </div>
+    <div className="flex relative items-center justify-center h-[100vh] w-full ">
+      <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
+        <h1 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-800 to-neutral-900 dark:from-neutral-600 dark:to-white text-xl  md:text-2xl lg:text-5xl font-sans py-2 md:py-10  font-bold tracking-tight fixed ">
+          Welcome to the Diary
+        </h1>
 
-      <div className="w-full flex items-center justify-end -ml-36   ">
-        <div className=" flex justify-start items-start mr-40 mt-28 ">
-          <Image
-            className="object-cover rounded-xl mr-10"
-            src="/notebook.png"
-            alt="side image "
-            width={300}
-            height={300}
-          />
+        <p className="max-w-xl   text-neutral-300/90 dark:text-neutral-400 text-md gap-y-10 p-2 mt-64 text-center ">
+          Every moment, every thought — your story starts here. Share life in
+          real-time, one post at a time.
+        </p>
+
+        <div className="flex flex-row justify-around gap-4 mt-10 ">
+          {" "}
+          <Link href="/sign-in" className="z-20">
+            <Button
+              className=" text-white box-shadow  border-neutral-800 shadow-lg  hover:opacity-90 hover:scale-105 flex-none bg-card  border-2  border-slate-400/50 cursor-default"
+              variant="outline"
+            >
+              Sign in
+            </Button>
+          </Link>
+          <Link href="/sign-up" className="z-20">
+            <Button
+              className=" text-white box-shadow  border-neutral-800 shadow-lg  hover:opacity-90 hover:scale-105 flex-none bg-card  border-2  border-slate-400/50 cursor-default"
+              variant="outline"
+            >
+              Sign up
+            </Button>
+          </Link>
         </div>
-        <div className="flex flex-col items-center h-[500px] mt-32 border-0 border-lime-100 rounded-2xl">
-          <div className="text-6xl m-10  ">Now Happening</div>
-          <div className="flex flex-col mt-10 ">
-            <Link href="/sign-in">
-              <button className="bg-white text-blue-600/90 h-10 w-60 rounded-full m-2  ">
-                Sign In
-              </button>
-              <div>
-                <button className="bg-green-600/90 m-2 rounded-full text-white flex-nowrap w-60 flex flex-col h-10 items-center justify-center">
-                  Create Account
-                </button>
-              </div>
-            </Link>
-            <div>
-              <Link href={"/sign-up"}>
-                <Button className="bg-blue-600/90 m-2  text-white w-60 rounded-full">
-                  Sign Up
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div></div>
+      </BackgroundLines>
     </div>
   );
 }

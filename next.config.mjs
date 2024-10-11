@@ -5,7 +5,7 @@ const nextConfig = {
       dynamic: 30,
     },
   },
-  // serverExternalPackages: ["@node-rs/argon2"],
+  serverExternalPackages: ["@node-rs/argon2"],
   images: {
     domains: ["utfs.io", "img.clerk.com"],
     remotePatterns: [

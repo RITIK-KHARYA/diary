@@ -11,3 +11,7 @@ export function formatNumber(n: number): string {
     maximumFractionDigits: 1,
   }).format(n);
 }
+
+export function cn2(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}

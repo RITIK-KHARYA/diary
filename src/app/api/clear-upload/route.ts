@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
     if (authHeader !== `Bearer${process.env.CRON_SECRET}`) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
+    console.log("clearing unused media");
     const unusedMedia = await prisma.media.findMany({
       where: {
         postid: null,
