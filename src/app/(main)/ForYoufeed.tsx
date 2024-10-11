@@ -30,7 +30,7 @@ export default function ForYoufeed() {
         .json<PostPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => {
-      return lastPage.nextcursor;
+      return lastPage.nextCursor;
     },
   });
 
@@ -64,7 +64,7 @@ export default function ForYoufeed() {
         {posts.map((post) => (
           <Post key={post.id} post={post} />
         ))}
-
+        <div className="h-4 w-full"></div>
         {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
       </InfiniteScrollContainer>
     </>

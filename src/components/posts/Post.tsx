@@ -1,3 +1,5 @@
+"use client";
+
 import { Media, Post as Postdata } from "@prisma/client";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import Link from "next/link";

@@ -11,7 +11,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 export default async function Navbar() {
   const user = await getUser();
   return (
-    <div className="fixed top-0 w-full z-20 border-b-2 my-2 border-slate-800 ">
+    <div className=" top-0 w-full z-20 border-b-2 my-2 border-slate-800 sticky ">
       <div className="flex justify-between">
         <div className="mt-1 px-2">
           <ModeToggle />

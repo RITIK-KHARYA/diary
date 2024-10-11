@@ -12,7 +12,7 @@ import UserTooltip from "./UserTooltip";
 const fecthUsers = async () => {};
 export default async function Trendsidebar() {
   return (
-    <div className="sticky top-[5.56rem] hidden h-fit flex-none md:block space-y-5 lg:w-80 rounded-lg border-2 border-neutral-500 bg-card p-5 mx-10 bg-neutral-900">
+    <div className="sticky top-[5.56rem] h-fit flex-none md:block space-y-5 lg:w-80 rounded-lg border-2 border-neutral-500 bg-card p-3 right-5 bg-neutral-900">
       <div className="text-start font-bold text-white ">Who To Follow</div>
       <Whotofollow />
     </div>
