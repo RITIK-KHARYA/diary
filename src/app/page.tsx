@@ -7,9 +7,10 @@ import { redirect } from "next/navigation";
 
 export default function Landingpage() {
   const user = currentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
+
+  // if (user) {
+  //   redirect("/home");
+  // }
 
   return (
     <div className="flex relative items-center justify-center h-[100vh] w-full ">

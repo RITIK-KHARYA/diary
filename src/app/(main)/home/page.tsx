@@ -19,7 +19,6 @@ export default async function Home() {
   return (
     <main className="w-full mt-6   ">
       <div className="flex flex-row space-x-6 justify-center">
-        {/* <div className="sticky space-y-5 w-[350px] flex justify-center ml-10 "></div> */}
         <ScrollArea className=" h-[calc(100vh-100px)] w-fit px-4  border-x-2 ">
           <div className=" flex flex-col w-fit shadow-sm space-y-2 ">
             <PostEditor
@@ -42,6 +41,7 @@ export default async function Home() {
             </div>
           </div>
         </ScrollArea>
+        <Trendsidebar />
       </div>
     </main>
   );

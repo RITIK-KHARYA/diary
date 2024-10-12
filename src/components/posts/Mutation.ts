@@ -47,9 +47,10 @@ export default function useDeletePostMdutation() {
       );
       toast({
         description: "post deleted",
+        variant: "destructive",
       });
-      if (pathname === `/post/${deletedPost.id}`) {
-        router.push(`/user/${deletedPost.user.username}`); //deletedpost id pencho phle kaise agai//
+      if (pathname === `/posts/${deletedPost.id}`) {
+        router.push(`/user/${deletedPost.user.username}`);
       }
     },
   });

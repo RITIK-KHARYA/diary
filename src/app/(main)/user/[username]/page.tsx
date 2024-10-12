@@ -61,22 +61,23 @@ export default async function Page({ params: { username } }: pageprops) {
   }
   const user = await getUser(username, loggedInUser.id);
   return (
-    <main className="flex  w-full  flex-col">
-      <div className="w-full flex flex-row justify-center space-x-1">
-        <Menubar classname="sticky top-[5.5rem]  m-0 w-56 h-fit hidden sm:block px-3 py-8 space-y-4 border-2 border-zinc-800 bg-card rounded-xl flex-none shadow-xl divide-y-2 divide-zinc-800 " />
-        <div className="w-full h-full flex flex-col justify-center items-center">
+    <main className="flex  w-full  flex-col  ">
+      <div className="w-full h-full flex flex-row space-x-2 ">
+        <div className="w-full h-full flex flex-col justify-between border space-x-5 ">
           <Userprofile user={user} logginUserId={loggedInUser.id} />
-          <ScrollArea className=" h-full w-full px-4  border-x-2 overflow-y-scroll">
+          <ScrollArea className=" h-full w-full   overflow-y-scroll">
             <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full">
-              <h2 className="text-center text-2xl font-bold">
-                {user.displayname} posts
+              <h2 className="text-center text-2xl font-bold m-5">
+                {user.displayname} ' posts
               </h2>
 
               <Userpost userid={user.id} />
             </div>
           </ScrollArea>
         </div>
-        <Trendsidebar />
+        <div className=" flex justify-center  h-full w-[500px]">
+          <Trendsidebar />
+        </div>
       </div>
     </main>
   );
@@ -95,7 +96,7 @@ export async function Userprofile({ user, logginUserId }: Userprofileprops) {
     ),
   };
   return (
-    <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-16 border ">
+    <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-8 ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
         <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
           <Loader2></Loader2>

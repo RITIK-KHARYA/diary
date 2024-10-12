@@ -64,12 +64,14 @@ export default function Post({ post }: PostProps) {
               )}
             </div>
             <Linkfy>
-              <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
-                {post.content}
-              </div>
-              {post.attachments.length > 0 && (
-                <MediaPreviews attachments={post.attachments} />
-              )}
+              <Link href={`/posts/${post.id}`}>
+                <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
+                  {post.content}
+                </div>
+                {post.attachments.length > 0 && (
+                  <MediaPreviews attachments={post.attachments} />
+                )}
+              </Link>
             </Linkfy>
           </div>
         </div>
