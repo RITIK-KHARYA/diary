@@ -19,6 +19,7 @@ model User {
   username  String @unique
   displayname      String
   email     String? @unique
+  likes Like[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   avatarurl String?
@@ -45,7 +46,8 @@ model Post {
   id        String @id @default(cuid())
   postid    String @default(cuid())
   title     String
-  content   String
+  likes Like[]
+    content   String
   userId    String
   attachments Media[]
   createdAt DateTime @default(now())
@@ -67,3 +69,13 @@ enum MediaType{
   IMAGE
   VIDEO
 }
+
+model Like{
+  userId String   //who liked 
+  postId String  //which post liked  
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id],onDelete: Cascade)
+@@unique([userId, postId])
+@@map("likes")
+
+  }

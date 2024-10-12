@@ -68,7 +68,7 @@ async function Userinfosidebar({ user }: Userinfosidebarprops) {
   if (!people) return null;
   return (
     <div className=" p-3  shadow-sm rounded-xl  bg-neutral-900/90">
-      <div className="text-xl flex flex-row items-center justify-center font-bold underline underline-offset-4 ">
+      <div className="text-lg flex flex-row items-center justify-center font-bold underline underline-offset-4 ">
         {" "}
         About this user{" "}
       </div>
@@ -78,7 +78,7 @@ async function Userinfosidebar({ user }: Userinfosidebarprops) {
             <AvatarImage src={user.avatarurl || ""} className="flex-none" />
           </Avatar>
           <div>
-            <p className="text-sm line-clamp break-all font-semibold hover:underline ">
+            <p className="text-sm line-clamp break-all font-semibold hover:underline mt-4 ">
               {user.displayname}
             </p>
 
@@ -88,7 +88,7 @@ async function Userinfosidebar({ user }: Userinfosidebarprops) {
           </div>
         </Link>
       </UserTooltip>
-      <div>
+      <div className="flex mt-2">
         <p className="line-clamp-6 break-words text-muted-foreground whitespace-pre-line ">
           {user.bio}
         </p>

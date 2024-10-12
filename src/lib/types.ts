@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import prisma from "./prisma";
 import { create } from "domain";
+import { userAgent } from "next/server";
 
 export function getUserDataSelect(loggedInUserId: string) {
   return {
@@ -28,18 +29,28 @@ export function getUserDataSelect(loggedInUserId: string) {
   };
 }
 
-export function getPostDataInclude(loggedinUser: string) {
+export function getPostDataInclude(loggedInUserId: string) {
   return {
     user: {
-      select: getUserDataSelect(loggedinUser),
+      select: getUserDataSelect(loggedInUserId), //yeha loggedinuserid h keep in mind
     },
     attachments: true,
+    likes: {
+      where: {
+        userId: loggedInUserId, //changed here check it out later by the author for the author
+      },
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: { likes: true },
+    },
   } satisfies Prisma.PostInclude;
 }
 export type UserData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
 }>;
-
 
 export type PostData = Prisma.PostGetPayload<{
   include: ReturnType<typeof getPostDataInclude>;
@@ -52,4 +63,8 @@ export interface PostPage {
 export interface Followinfo {
   followers: number;
   isfollowedbyUser: boolean;
+}
+export interface Likeinfo {
+  likes: number;
+  islikedbyUser: boolean;
 }
