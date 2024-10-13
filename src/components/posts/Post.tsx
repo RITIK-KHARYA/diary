@@ -14,6 +14,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import LikeButton from "./LikeButton";
+import BookmarkButton from "./BookmarkButton";
 
 interface PostProps {
   post: PostData;
@@ -78,13 +79,23 @@ export default function Post({ post }: PostProps) {
                 <MediaPreviews attachments={post.attachments} />
               )}
 
-              <LikeButton
-                postid={post.id}
-                intialState={{
-                  likes: post._count.likes,
-                  islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
-                }}
-              />
+              <div className="flex justify-around divide-x-[1px] divide-neutral-600 mt-4 ">
+                <BookmarkButton
+                  postid={post.id}
+                  intialState={{
+                    isbookmarkedbyUser: post.bookmark.some(
+                      (bookmark) => bookmark.userId === userId
+                    ),
+                  }}
+                />
+                <LikeButton
+                  postid={post.id}
+                  intialState={{
+                    likes: post._count.likes,
+                    islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
+                  }}
+                />
+              </div>
             </Linkfy>
           </div>
         </div>

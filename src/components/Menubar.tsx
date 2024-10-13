@@ -1,8 +1,13 @@
-import { Bell, Ghost, HomeIcon, Mail, User } from "lucide-react";
+import { Bell, Bookmark, Ghost, HomeIcon, Mail, User } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
+import { getUser } from "@/actions/getUser";
+import prisma from "@/lib/prisma";
+import { equal } from "assert";
 interface MenubarProps {
   classname?: string;
+  username?: string;
 }
 
 export default function Menubar({ classname }: MenubarProps) {
@@ -47,9 +52,13 @@ export default function Menubar({ classname }: MenubarProps) {
         title="Home"
         asChild
       >
-        <Link href="/profile">
+        {/* <Link href={`/user/${}`}>
           <User />
           Profile
+        </Link> */}
+        <Link href="/bookmark">
+          <Bookmark />
+          Bookmark
         </Link>
       </Button>
     </div>

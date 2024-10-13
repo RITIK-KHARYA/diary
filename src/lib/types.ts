@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import prisma from "./prisma";
 import { create } from "domain";
 import { userAgent } from "next/server";
+import { Bookmark } from "lucide-react";
 
 export function getUserDataSelect(loggedInUserId: string) {
   return {
@@ -43,6 +44,14 @@ export function getPostDataInclude(loggedInUserId: string) {
         userId: true,
       },
     },
+    bookmark: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
     _count: {
       select: { likes: true },
     },
@@ -67,4 +76,7 @@ export interface Followinfo {
 export interface Likeinfo {
   likes: number;
   islikedbyUser: boolean;
+}
+export interface Bookmarkinfo {
+  isbookmarkedbyUser: boolean;
 }
