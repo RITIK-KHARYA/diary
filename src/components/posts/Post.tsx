@@ -13,6 +13,7 @@ import UserTooltip from "../UserTooltip";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import LikeButton from "./LikeButton";
 
 interface PostProps {
   post: PostData;
@@ -21,7 +22,7 @@ interface PostProps {
 export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
   useEffect(() => {
-    console.log("attachment rendered successfully");
+    console.log("attachment rendered successfully", post.id);
   }, []);
 
   return (
@@ -64,14 +65,26 @@ export default function Post({ post }: PostProps) {
               )}
             </div>
             <Linkfy>
-              <Link href={`/posts/${post.id}`}>
-                <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
+              <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
+                <Link
+                  href={`/posts/${post.id}`}
+                  suppressHydrationWarning={true}
+                >
                   {post.content}
-                </div>
-                {post.attachments.length > 0 && (
-                  <MediaPreviews attachments={post.attachments} />
-                )}
-              </Link>
+                </Link>
+              </div>
+
+              {post.attachments.length > 0 && (
+                <MediaPreviews attachments={post.attachments} />
+              )}
+
+              <LikeButton
+                postid={post.id}
+                intialState={{
+                  likes: post._count.likes,
+                  islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
+                }}
+              />
             </Linkfy>
           </div>
         </div>
@@ -110,6 +123,7 @@ function MediaPreview({ media }: MediaPreviewProps) {
         width={500}
         height={500}
         className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+        suppressHydrationWarning
       />
     );
   }

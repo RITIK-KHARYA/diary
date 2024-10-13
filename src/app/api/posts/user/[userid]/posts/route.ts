@@ -8,10 +8,8 @@ export async function GET(
   { params: { userid } }: { params: { userid: string } }
 ) {
   try {
+    
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
-    console.log(cursor);
-    console.log(userid);
-
     const pageSize = 10;
 
     const user = await currentUser();

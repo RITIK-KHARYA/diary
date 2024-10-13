@@ -25,7 +25,7 @@ const getPost = cache(async (postid: string, loggedinuser: string) => {
     include: getPostDataInclude(loggedinuser),
   });
   if (!post) notFound();
-  console.log(post);
+
   return post;
 });
 export async function generateMetadara({ params: { postid } }: pageprops) {

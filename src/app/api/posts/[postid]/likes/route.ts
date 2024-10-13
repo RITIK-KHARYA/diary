@@ -2,23 +2,25 @@ import prisma from "@/lib/prisma";
 import { Likeinfo } from "@/lib/types";
 import { useAuth } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
 
 export async function GET(
-  { params }: { params: { postid: string } },
-  req: Request
+  req: NextRequest,
+  { params }: { params: { postid: string } }
 ) {
   try {
-    const { userId } = useAuth();
+    const user = await currentUser();
 
-    if (!userId) {
+    if (!user) {
       return new Response(JSON.stringify({ error: "User not found" }));
     }
+
     const post = await prisma.post.findUnique({
       where: { id: params.postid },
       select: {
         likes: {
           where: {
-            userId: userId, //changed here check it out later by the author for the author
+            userId: user.id, //changed here check it out later by the author for the author
           },
           select: {
             userId: true,
@@ -39,6 +41,7 @@ export async function GET(
       likes: post._count.likes,
       islikedbyUser: !!post?.likes.length,
     };
+    return new Response(JSON.stringify(data));
   } catch (error) {
     return new Response(JSON.stringify({ error: "internal server error" }), {
       status: 500,
@@ -46,7 +49,10 @@ export async function GET(
   }
 }
 
-export async function POST(params: { postid: string }, req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { postid: string } }
+) {
   try {
     const user = await currentUser();
 
@@ -55,8 +61,10 @@ export async function POST(params: { postid: string }, req: Request) {
         status: 401,
       });
     }
+    console.log("hello bachooooooo");
+    console.log(params);
 
-    await prisma.like.upsert({
+    const liked = await prisma.like.upsert({
       where: {
         userId_postId: {
           userId: user.id,
@@ -69,6 +77,8 @@ export async function POST(params: { postid: string }, req: Request) {
       },
       update: {},
     });
+    console.log("hehe");
+    console.log(liked);
     return new Response();
   } catch (error) {
     return new Response(JSON.stringify({ error: "internal server error" }), {

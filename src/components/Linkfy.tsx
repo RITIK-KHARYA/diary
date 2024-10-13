@@ -32,6 +32,7 @@ function LinkfyUsername({ children }: LinkfyProps) {
             key={Key}
             className="text-primary hover:underline hover:text-green-500"
             href={`/user/${match.slice(1)}`}
+            suppressHydrationWarning
           >
             {match}
           </Link>
@@ -51,6 +52,7 @@ function LinkifyHashtag({ children }: LinkfyProps) {
           key={Key}
           className="text-primary hover:underline hover:text-green-500"
           href={`/hashtag/${match.slice(1)}`}
+          suppressHydrationWarning
         >
           {match}
         </Link>
