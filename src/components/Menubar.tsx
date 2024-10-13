@@ -56,7 +56,7 @@ export default function Menubar({ classname }: MenubarProps) {
           <User />
           Profile
         </Link> */}
-        <Link href="/bookmark">
+        <Link href="/bookmarks">
           <Bookmark />
           Bookmark
         </Link>
