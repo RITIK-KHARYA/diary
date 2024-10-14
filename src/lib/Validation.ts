@@ -13,3 +13,7 @@ export const updateuserprofileschema = z.object({
 });
 
 export type updateuserprofileValue = z.infer<typeof updateuserprofileschema>;
+
+export const createCommentschema = z.object({
+  content: requiredString,
+});

@@ -12,9 +12,11 @@ import Linkfy from "../Linkfy";
 import UserTooltip from "../UserTooltip";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LikeButton from "./LikeButton";
 import BookmarkButton from "./BookmarkButton";
+import { MessageSquare, MessagesSquare } from "lucide-react";
+import Comments from "../comments/Commnets";
 
 interface PostProps {
   post: PostData;
@@ -22,6 +24,7 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
+  const [showcomments, setshowcomments] = useState(false);
   useEffect(() => {
     console.log("attachment rendered successfully", post.id);
   }, []);
@@ -79,7 +82,14 @@ export default function Post({ post }: PostProps) {
                 <MediaPreviews attachments={post.attachments} />
               )}
 
-              <div className="flex justify-around divide-x-[1px] divide-neutral-600 mt-4 ">
+              <div className="flex justify-between  items-center mt-4 ">
+                <LikeButton
+                  postid={post.id}
+                  intialState={{
+                    likes: post._count.likes,
+                    islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
+                  }}
+                />
                 <BookmarkButton
                   postid={post.id}
                   intialState={{
@@ -88,18 +98,16 @@ export default function Post({ post }: PostProps) {
                     ),
                   }}
                 />
-                <LikeButton
-                  postid={post.id}
-                  intialState={{
-                    likes: post._count.likes,
-                    islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
-                  }}
+                <CommentButton
+                  onClick={() => setshowcomments(!showcomments)}
+                  post={post}
                 />
               </div>
             </Linkfy>
           </div>
         </div>
       </div>
+      {showcomments && <Comments post={post} />}
     </article>
   );
 }
@@ -152,4 +160,19 @@ function MediaPreview({ media }: MediaPreviewProps) {
   }
 
   return <p className="text-destructive">Unsupported media type</p>;
+}
+
+interface commentsbuttonprops {
+  onClick: () => void;
+  post: PostData;
+}
+function CommentButton({ onClick, post }: commentsbuttonprops) {
+  return (
+    <button className="flex items-center gap-2" onClick={onClick}>
+      <MessageSquare className="size-5" />
+      <span className="text-sm tabular-nums text-foreground">
+        {post._count.comment} <span className="hidden sm:inline">Comments</span>
+      </span>
+    </button>
+  );
 }
