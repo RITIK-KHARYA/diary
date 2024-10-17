@@ -9,6 +9,7 @@ interface InfiniteScrollContainerProps extends React.PropsWithChildren {
 
 export default function InfiniteScrollContainer({
   onBottomReached,
+
   children,
   classname,
 }: InfiniteScrollContainerProps) {

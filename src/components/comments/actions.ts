@@ -17,14 +17,18 @@ export async function submitComment({
   if (!user) {
     throw new Error("User not found");
   }
-  const { content: contentValidated } = createCommentschema.parse(comment);
+  console.log(comment);
+  const { content: contentValidated } = createCommentschema.parse({
+    content: comment,
+  });
+
   const newComment = await prisma.comment.create({
     data: {
-      //data kaha se aaya ?
       content: contentValidated,
       userId: user.id,
       postId: post.id,
     },
+
     include: getCommentDataInclude(user.id),
   });
   return newComment;

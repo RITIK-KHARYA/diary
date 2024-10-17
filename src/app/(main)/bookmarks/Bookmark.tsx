@@ -11,6 +11,7 @@ import InfiniteScrollContainer from "@/components/infiniteScrollcontainer";
 import { useEffect } from "react";
 import PostsLoadingskeleton from "@/components/posts/PostLoadingskeleton";
 import DeletePostDialog from "@/components/posts/DeletePostDialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 export default function Bookmark() {
   const {
     data,
@@ -61,9 +62,13 @@ export default function Bookmark() {
         classname="space-y-3  "
         onBottomReached={() => hasNextPage && fetchNextPage()}
       >
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
+        <ScrollArea className="h-[calc(100vh-150px)] w-fit px-6  flex flex-col   border-x-2">
+          <div className="flex flex-col gap-3 ">
+            {posts.map((post) => (
+              <Post key={post.id} post={post} />
+            ))}
+          </div>
+        </ScrollArea>
         <div className="h-4 w-full"></div>
         {isFetchingNextPage && <Loader2 className="mx-auto animate-spin" />}
       </InfiniteScrollContainer>

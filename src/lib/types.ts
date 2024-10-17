@@ -76,7 +76,7 @@ export interface PostPage {
 export function getCommentDataInclude(loggedInUserId: string) {
   return {
     user: {
-      include: getUserDataSelect(loggedInUserId),
+      select: getUserDataSelect(loggedInUserId),
     },
   } satisfies Prisma.CommentInclude;
 }
