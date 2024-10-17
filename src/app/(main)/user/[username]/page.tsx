@@ -21,6 +21,8 @@ import Navbar from "@/components/Navbar";
 import Menubar from "@/components/Menubar";
 import EditProfileButton from "@/app/api/username/[username]/EditProfileButton";
 import { Loading } from "@clerk/elements/common";
+import { Separator } from "@/components/ui/separator";
+
 interface pageprops {
   params: { username: string };
 }
@@ -63,9 +65,10 @@ export default async function Page({ params: { username } }: pageprops) {
   return (
     <main className="flex  w-full  flex-col  ">
       <div className="w-full h-full flex flex-row space-x-2 ">
-        <div className="w-full h-full flex flex-col justify-between border space-x-5 ">
-          <Userprofile user={user} logginUserId={loggedInUser.id} />
-          <ScrollArea className=" h-full w-full   overflow-y-scroll">
+        <div className="w-full h-full flex flex-col justify-between  space-x-5 border  ">
+          <ScrollArea className=" h-[calc(100vh-10px)] w-full px-6  flex flex-col  border">
+            <Userprofile user={user} logginUserId={loggedInUser.id} />
+            <Separator />
             <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full">
               <h2 className="text-center text-2xl font-bold m-5">
                 {user.displayname} ' posts
@@ -99,7 +102,7 @@ export async function Userprofile({ user, logginUserId }: Userprofileprops) {
     <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-8 ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
         <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
-          <Loader2></Loader2>
+          <Loader2Icon className="w-10 h-10 animate-spin" />
         </AvatarFallback>
         <AvatarImage
           src={user.avatarurl || "https://github.com/shadcn.png"}

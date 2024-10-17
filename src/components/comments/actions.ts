@@ -2,8 +2,13 @@
 
 import { createCommentschema } from "@/lib/Validation";
 import prisma from "@/lib/prisma";
-import { PostData, getCommentDataInclude } from "@/lib/types";
+import {
+  PostData,
+  getCommentDataInclude,
+  getUserDataSelect,
+} from "@/lib/types";
 import { currentUser } from "@clerk/nextjs/server";
+import { error } from "console";
 
 export async function submitComment({
   post,
@@ -33,3 +38,28 @@ export async function submitComment({
   });
   return newComment;
 }
+
+export default async function deleteComment(id: string) {
+  const user = await currentUser();
+  if (!user) {
+    throw error("User not found");
+  }
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!comment) {
+    throw error("comment not found");
+  }
+  if (comment.userId !== user.id) {
+    throw error("unauthorized");
+  }
+
+  const deletedComment = await prisma.comment.delete({
+    where: { id },
+    include: getCommentDataInclude(user.id),
+  });
+  return deletedComment;
+}
+

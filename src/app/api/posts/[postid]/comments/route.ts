@@ -9,9 +9,9 @@ export async function GET(
 ) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
-    console.log(cursor);
+    console.log("mycursor", cursor);
 
-    const pageSize = 10;
+    const pageSize = 5;
     const user = await currentUser();
 
     if (!user) {
@@ -23,12 +23,13 @@ export async function GET(
       where: { postId: params.postid },
       include: getCommentDataInclude(user.id),
       orderBy: { createdAt: "desc" },
-      take: pageSize - 1, // -1 because we want to include the last comment and - before pagesize
+      take: pageSize + 1,
       cursor: cursor ? { id: cursor } : undefined,
     });
-    const previousCursor = comments.length > pageSize ? comments[0].id : null;
+    const previousCursor =
+      comments.length > pageSize ? comments[pageSize].id : null;
     const data: CommentPage = {
-      comments: comments.length > pageSize ? comments.slice(1) : comments, //why slice 1 ? we should slice 0 instead ?
+      comments: comments.slice(0, pageSize),
       previousCursor,
     };
     return Response.json(data);
