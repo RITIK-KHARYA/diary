@@ -1,9 +1,10 @@
 import { currentUser } from "@clerk/nextjs/server";
+
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 import { getUserDataSelect } from "@/lib/types";
 
-export default async function GET(
+export async function GET(
   req: NextRequest,
   { params }: { params: { username: string } }
 ) {
@@ -22,9 +23,9 @@ export default async function GET(
       },
       select: getUserDataSelect(loggedinuser.id),
     });
+    return Response.json(user);
   } catch (error) {
     return Response.json({ error: "internal server error" }, { status: 500 });
     console.log("route file error inside username", error);
   }
-  return;
 }
