@@ -1,4 +1,12 @@
-import { Bell, Bookmark, Ghost, HomeIcon, Mail, User } from "lucide-react";
+import {
+  Bell,
+  Bookmark,
+  Ghost,
+  HomeIcon,
+  Mail,
+  User,
+  User2,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
@@ -10,7 +18,8 @@ interface MenubarProps {
   username?: string;
 }
 
-export default function Menubar({ classname }: MenubarProps) {
+export default async function Menubar({ classname }: MenubarProps) {
+  const username = (await getUser())?.username;
   return (
     <div className={classname}>
       <Button
@@ -52,13 +61,20 @@ export default function Menubar({ classname }: MenubarProps) {
         title="Home"
         asChild
       >
-        {/* <Link href={`/user/${}`}>
-          <User />
-          Profile
-        </Link> */}
         <Link href="/bookmarks">
           <Bookmark />
           Bookmark
+        </Link>
+      </Button>
+      <Button
+        variant="ghost"
+        className="flex items-start justify-start gap-3 m-2 "
+        title="Home"
+        asChild
+      >
+        <Link href={`/user/${username}`}>
+          <User2 />
+          Profile
         </Link>
       </Button>
     </div>

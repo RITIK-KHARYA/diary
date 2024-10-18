@@ -5,12 +5,12 @@ import Link from "next/link";
 import LInk from "next/link";
 import { redirect } from "next/navigation";
 
-export default function Landingpage() {
-  const user = currentUser();
+export default async function Landingpage() {
+  const user = await currentUser();
 
-  // if (user) {
-  //   redirect("/home");
-  // }
+  if (user) {
+    redirect("/home");
+  }
 
   return (
     <div className="flex relative items-center justify-center h-[100vh] w-full ">

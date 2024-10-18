@@ -1,3 +1,4 @@
+"use client";
 import { CommentPage, PostData } from "@/lib/types";
 import CommentInput from "./CommentInput";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -42,32 +43,40 @@ export default function Comments({ post }: commentsProps) {
       <CommentInput post={post} />
 
       <div className="divide-y-4">
-        <ScrollArea className="h-[300px]">
-          {comments.map((comment) => (
-            <Comment comment={comment} key={comment.id} />
-          ))}
-          {hasNextPage && (
-            <LoadingButton
-              loading={isFetching}
-              onClick={() => fetchNextPage()}
-              disabled={isFetching}
-              className="mx-auto text-sm flex"
-            >
-              Load more comments
-            </LoadingButton>
-          )}
-          {status === "pending" && (
-            <Loader2 className="mx-auto text-sm animate-spin" />
-          )}
-          {status === "success" && !comments.length && (
-            <p className="mx-auto text-sm"> there are no comments yet </p>
-          )}
-          {status === "error" && (
-            <p className="mx-auto text-sm font-semibold text-muted-foreground">
-              An error occurred while fetching comments
-            </p>
-          )}
-        </ScrollArea>
+        {comments.length > 0 && (
+          <p className="text-lg flex items-center justify-center mb-1 font-semibold">
+            Comments
+          </p>
+        )}
+        {comments.length > 0 && (
+          <ScrollArea className="h-[300px]">
+            {comments.map((comment) => (
+              <Comment comment={comment} key={comment.id} />
+            ))}
+            {hasNextPage && (
+              <LoadingButton
+                loading={isFetching}
+                onClick={() => fetchNextPage()}
+                disabled={isFetching}
+                className="mx-auto text-sm flex"
+              >
+                Load more comments
+              </LoadingButton>
+            )}
+
+            {status === "pending" && (
+              <Loader2 className="mx-auto text-sm animate-spin" />
+            )}
+            {status === "success" && !comments.length && (
+              <p className="mx-auto text-sm"> there are no comments yet </p>
+            )}
+            {status === "error" && (
+              <p className="mx-auto text-sm font-semibold text-muted-foreground">
+                An error occurred while fetching comments
+              </p>
+            )}
+          </ScrollArea>
+        )}
       </div>
     </div>
   );

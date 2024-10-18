@@ -13,5 +13,6 @@ export const getUser = cache(async () => {
       id: user.id,
     },
   });
+  console.log("hehe");
   return me;
 });
