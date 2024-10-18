@@ -1,6 +1,5 @@
 "use client";
 import { Followinfo, UserData } from "@/lib/types";
-import { currentUser } from "@clerk/nextjs/server";
 import {
   Tooltip,
   TooltipContent,
@@ -10,9 +9,8 @@ import { TooltipProvider } from "./ui/tooltip";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { useAuth } from "@clerk/nextjs";
-import { use, useId } from "react";
-import FollowerButton from "./FollowerButton";
 import Followercounter from "./followercounter";
+import FollowerButton from "./FollowerButton";
 
 interface UserTooltipProps {
   user: UserData;

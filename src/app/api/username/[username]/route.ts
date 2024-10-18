@@ -1,5 +1,4 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { equal } from "assert";
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 import { getUserDataSelect } from "@/lib/types";

@@ -1,10 +1,8 @@
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { UserData } from "@/lib/types";
-import * as zod from "@hookform/resolvers/zod";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
-import updateuserprofile from "./actions";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
@@ -28,8 +26,6 @@ import { StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
 import CropimageDialog from "@/components/CropimageDialog";
-import { Button } from "@/components/ui/button";
-import { submitpost } from "@/components/posts/editor/actions";
 import LoadingButton from "@/components/ui/LoadingButton";
 
 interface EditprofileDialogProps {
