@@ -1,24 +1,2 @@
-<!-- 
-\
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-we are creating the dialog box for the  -->
+the search feature , notification and message feature coming soon 
+:) 

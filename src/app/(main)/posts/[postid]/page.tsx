@@ -94,15 +94,17 @@ async function Userinfosidebar({ user }: Userinfosidebarprops) {
         </p>
       </div>
       {user.id !== people.id && (
-        <FollowerButton
-          userid={user.id}
-          intialstate={{
-            followers: user._count.follower,
-            isfollowedbyUser: user.follower.some(
-              ({ followerid }) => followerid === people.id //followerid will be the id of the current logged in user
-            ),
-          }}
-        />
+        <div className="flex justify-end items-center mt-4 ">
+          <FollowerButton
+            userid={user.id}
+            intialstate={{
+              followers: user._count.follower,
+              isfollowedbyUser: user.follower.some(
+                ({ followerid }) => followerid === people.id
+              ),
+            }}
+          />
+        </div>
       )}
     </div>
   );

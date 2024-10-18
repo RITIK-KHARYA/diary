@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 export default function SignInPage() {
   return (
-    <div className="grid w-full grow items-center px-4 justify-center h-screen">
+    <div className="grid w-full grow items-center px-4 sm:justify-center h-screen">
       <SignIn.Root>
         <Clerk.Loading>
           {(isGlobalLoading) => (
@@ -33,6 +33,27 @@ export default function SignInPage() {
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <div className="grid grid-cols-2 gap-x-4">
+                      {/* <Clerk.Connection name="github" asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          type="button"
+                          disabled={isGlobalLoading}
+                        >
+                          <Clerk.Loading scope="provider:github">
+                            {(isLoading) =>
+                              isLoading ? (
+                                <Icons.spinner className="size-4 animate-spin" />
+                              ) : (
+                                <>
+                                  <Icons.gitHub className="mr-2 size-4" />
+                                  GitHub
+                                </>
+                              )
+                            }
+                          </Clerk.Loading>
+                        </Button>
+                      </Clerk.Connection> */}
                       <Clerk.Connection name="google" asChild>
                         <Button
                           size="sm"
@@ -232,7 +253,7 @@ export default function SignInPage() {
                             className="text-muted-foreground"
                             fallback={({ resendableAfter }) => (
                               <Button variant="link" size="sm" disabled>
-                                Didn&apos;t recieve a code? Resend (
+                                Didn&apos;t receive a code? Resend (
                                 <span className="tabular-nums">
                                   {resendableAfter}
                                 </span>
@@ -241,7 +262,7 @@ export default function SignInPage() {
                             )}
                           >
                             <Button variant="link" size="sm">
-                              Didn&apos;t recieve a code? Resend
+                              Didn&apos;t receive a code? Resend
                             </Button>
                           </SignIn.Action>
                         </div>
