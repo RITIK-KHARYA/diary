@@ -83,7 +83,7 @@ interface Userprofileprops {
   logginUserId: string;
 }
 
-export async function Userprofile({ user, logginUserId }: Userprofileprops) {
+async function Userprofile({ user, logginUserId }: Userprofileprops) {
   const followinfo: Followinfo = {
     followers: user._count.follower,
     isfollowedbyUser: user.follower.some(
