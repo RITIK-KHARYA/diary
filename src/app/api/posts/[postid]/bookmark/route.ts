@@ -77,7 +77,7 @@ export async function POST(
     });
   }
 }
-export async function DELETE(params: { postid: string }, req: Request) {
+export async function DELETE(req: Request, params: { postid: string }) {
   try {
     const user = await currentUser();
 
