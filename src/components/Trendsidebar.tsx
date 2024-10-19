@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import FollowerButton from "./FollowerButton";
 import { getUserDataSelect } from "@/lib/types";
 import UserTooltip from "./UserTooltip";
+import { Loader2 } from "lucide-react";
 const fecthUsers = async () => {};
 export default async function Trendsidebar() {
   return (
@@ -54,32 +55,34 @@ export default async function Trendsidebar() {
         {usersToFollow.map((user) => (
           <div
             key={user.id}
-            className="text-white text-sm flex gap-x-3 items-center"
+            className="text-white text-sm flex gap-x-3 items-center   "
           >
             <UserTooltip user={user}>
               <Link href={`/user/${user.username}`} className="cursor-pointer">
-                <div className=" flex justify-start items-start rounded-full">
+                <div className=" flex justify-start items-start rounded-full ">
                   <Avatar>
                     <AvatarImage
                       src={user.avatarurl || "https://github.com/shadcn.png"}
                     />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>
+                      <Loader2 className="animate-spin h-4 w-4" />
+                    </AvatarFallback>
                   </Avatar>
                 </div>
               </Link>
             </UserTooltip>
             <Link
               href={`/user/${user.username}`}
-              className="cursor-pointer hover:underline"
+              className="cursor-pointer hover:underline w-full "
             >
               {user.displayname}
             </Link>
-            <div className="flex w-[150px] justify-end items-center">
+            <div className="flex w-[150px] justify-end items-center mt-3">
               <FollowerButton
                 userid={user.id}
                 intialstate={{
                   followers: user._count.follower,
-                  isfollowedbyUser: !!user.follower.length, //usne kuch aur kiya tha
+                  isfollowedbyUser: !!user.follower.length,
                 }}
               />
             </div>
