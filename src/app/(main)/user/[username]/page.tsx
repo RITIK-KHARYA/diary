@@ -11,7 +11,7 @@ import Userpost from "./postuser";
 import Followercounter from "@/components/followercounter";
 import FollowerButton from "@/components/FollowerButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import EditProfileButton from "@/app/api/username/[username]/EditProfileButton";
+import EditProfileButton from "./EditProfileButton";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 

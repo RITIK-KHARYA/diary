@@ -42,7 +42,6 @@ export async function GET(
     };
     return Response.json(data);
   } catch (error) {
-    console.log("backend error probably", error);
     return Response.json({ error: "internal server error" }, { status: 500 });
   }
 }
@@ -74,9 +73,9 @@ export async function POST(
       update: {},
     });
 
-    return new Response("HEHE");
+    return Response.json({success:true});
   } catch (error) {
-    console.log("backend error probably post one", error);
+
     return Response.json({ error: "internal server error" }, { status: 500 });
   }
 }
@@ -100,9 +99,8 @@ export async function DELETE(
       },
     });
 
-    return new Response();
+       return Response.json({ success: true });
   } catch (error) {
-    console.log("backend error probably post one", error);
     return Response.json({ error: "internal server error" }, { status: 500 });
   }
 }

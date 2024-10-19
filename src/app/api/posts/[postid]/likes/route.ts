@@ -79,7 +79,7 @@ export async function POST(
     });
     console.log("hehe");
     console.log(liked);
-    return new Response();
+    return Response.json({ success: true });
   } catch (error) {
     return new Response(JSON.stringify({ error: "internal server error" }), {
       status: 500,
@@ -101,7 +101,7 @@ export async function DELETE(req: Request, params: { postid: string }) {
         postId: params.postid,
       },
     });
-    return new Response();
+    return Response.json({success: true});
   } catch (error) {
     return new Response(JSON.stringify({ error: "internal server error" }), {
       status: 500,

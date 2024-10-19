@@ -34,6 +34,8 @@ export async function GET(req: NextRequest) {
     };
     return Response.json(data);
   } catch (error) {
-    console.error("there is interal error", error), { status: 500 };
+    return new Response(JSON.stringify({ error: "internal server error" }), {
+      status: 500,
+    });
   }
 }

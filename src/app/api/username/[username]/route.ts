@@ -26,6 +26,6 @@ export async function GET(
     return Response.json(user);
   } catch (error) {
     return Response.json({ error: "internal server error" }, { status: 500 });
-    console.log("route file error inside username", error);
+
   }
 }
