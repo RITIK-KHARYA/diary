@@ -21,18 +21,19 @@ export default function AppBar() {
             alt="logo.png"
           />
           <span className="text-base flex justify-center items-center font-white font-bold">
-            getty
+            Diary
           </span>
         </div>
         <div className="flex gap-4">
-          <Button className=" text-white rounded-lg h-9 w-28 text-sm gap-x-1 bg-neutral-900/20 hover:bg-neutral-900/80 border-neutral-400 border-[1px]  ">
+          <Button className=" text-white rounded-lg h-9 w-28 text-sm gap-x-1
+           bg-neutral-900/20 hover:bg-neutral-900/80 border-neutral-400 border-[1px]  ">
             <BiLogoDiscordAlt className="text-violet-400  " size={20} />
             Discord
           </Button>
           <Button
             className="rounded-lg h-9 border-black border-[1px] w-28 bg-white text-black"
             onClick={() => {
-              router.push("/signin");
+              router.push("/sign-in");
             }}
           >
             Get Started

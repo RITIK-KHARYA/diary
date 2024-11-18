@@ -87,8 +87,8 @@ export default function PostEditor(avatar: { avatar: string }) {
 
   return (
     // w-[calc(100%-20px)]
-    <div className="flex w-[500px] flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
-      <div className="w-[478px] flex space-x-2 ">
+    <div className="flex w-auto flex-col gap-5 rounded-md  p-2 shadow-lg bg-opacity-35 bg-neutral-900/90 justify-center ">
+      <div className="w-full flex space-x-2 ">
         <Avatar className="mt-2  h-10 w-10 cursor-pointer ">
           <AvatarImage src={avatarurl} />
           <AvatarFallback>CN</AvatarFallback>

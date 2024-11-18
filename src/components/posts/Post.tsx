@@ -26,8 +26,8 @@ export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
   const [showcomments, setshowcomments] = useState(false);
   return (
-    <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-[500px]">
-      <div className="flex justify-between gap-3 item-start">
+    <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-auto">
+      <div className="flex justify-between gap-3 item-start w-full">
         <div className="flex   gap-5">
           <UserTooltip user={post.user}>
             <Link href={"/"}>
@@ -40,7 +40,7 @@ export default function Post({ post }: PostProps) {
             </Link>
           </UserTooltip>
 
-          <div className="flex flex-col ">
+          <div className="flex flex-col w-full">
             <div className="flex flex-row   space-x-2 justify-between ">
               <div className="flex flex-row justify-start items-start gap-1 ">
                 <span className=" text-muted-foreground  text-xs hover:underline cursor-pointer">
@@ -65,7 +65,7 @@ export default function Post({ post }: PostProps) {
               )}
             </div>
             <Linkfy>
-              <div className=" whitespace-pre-line break-words  flex w-[350px] break-all py-3">
+              <div className=" whitespace-pre-line break-words  flex w-[500px] break-all py-3">
                 <Link
                   href={`/posts/${post.id}`}
                   suppressHydrationWarning={true}

@@ -1,35 +1,35 @@
 import { createUserToDb } from "@/actions/createUserToDb";
-import Menubar from "@/components/Menubar";
 import PostEditor from "@/components/posts/editor/PostEditor";
 import Trendsidebar from "@/components/Trendsidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import prisma from "@/lib/prisma";
-import ForYoufeed from "../ForYoufeed";
-import { QueryClient } from "@tanstack/react-query";
-import { error } from "console";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
+import ForYoufeed from "../ForYoufeed";
 import Followingfeed from "../Followingfeed";
-// import ForYoufeed from "../(main)/ForYoufeed";
+
 export default async function Home() {
-  const user = await createUserToDb();
-  if (!user) {
-    throw error("User not found");
-  }
+  try {
+    const user = await createUserToDb();
 
-  return (
-    <main className="w-full mt-6   ">
-      <div className="flex flex-row space-x-6 justify-center">
-        <ScrollArea className=" h-[calc(100vh-100px)] w-fit px-4  border-x-2 ">
-          <div className=" flex flex-col w-fit shadow-sm space-y-2 ">
-            <PostEditor
-              avatar={user?.avatarurl || "https://github.com/shadcn.png"}
-            />
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-            <div className="">
+    return (
+      <main className="w-full mt-6">
+        <div className="flex flex-row justify-center space-x-6">
+          {/* Left Section: Posts & Feeds */}
+          <ScrollArea className="h-[calc(100vh-100px)] w-full max-w-2xl px-4 border-x border-gray-300">
+            <div className="flex flex-col shadow-sm space-y-4">
+              {/* Post Editor */}
+              <PostEditor
+                avatar={user?.avatarurl || "https://github.com/shadcn.png"}
+              />
+
+              {/* Tabs: For You and Following */}
               <Tabs defaultValue="for-you">
-                <TabsList>
-                  <TabsTrigger value="for-you">for-you</TabsTrigger>
-                  <TabsTrigger value="following">following</TabsTrigger>
+                <TabsList className="mb-4">
+                  <TabsTrigger value="for-you">For You</TabsTrigger>
+                  <TabsTrigger value="following">Following</TabsTrigger>
                 </TabsList>
                 <TabsContent value="for-you">
                   <ForYoufeed />
@@ -39,10 +39,19 @@ export default async function Home() {
                 </TabsContent>
               </Tabs>
             </div>
-          </div>
-        </ScrollArea>
-        <Trendsidebar />
-      </div>
-    </main>
-  );
+          </ScrollArea>
+
+          {/* Right Section: Trends Sidebar */}
+          <Trendsidebar />
+        </div>
+      </main>
+    );
+  } catch (error) {
+    console.error(error);
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <p className="text-red-500">Failed to load user data.</p>
+      </main>
+    );
+  }
 }
