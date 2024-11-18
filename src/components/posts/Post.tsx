@@ -26,7 +26,7 @@ export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
   const [showcomments, setshowcomments] = useState(false);
   return (
-    <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-auto">
+    <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-full">
       <div className="flex justify-between gap-3 item-start w-full">
         <div className="flex   gap-5">
           <UserTooltip user={post.user}>
