@@ -55,24 +55,21 @@ export default async function Page({ params: { username } }: pageprops) {
   }
   const user = await getUser(username, loggedInUser.id);
   return (
-    <main className="flex  w-full  flex-col  ">
-      <div className="w-full h-full flex flex-row space-x-2 ">
-        <div className="w-full h-full flex flex-col justify-between  space-x-5 border  ">
-          <ScrollArea className=" h-[calc(100vh-10px)] w-full px-6  flex flex-col  border">
+    <main className="flex w-full h-screen flex-col">
+      <div className="w-full h-full flex flex-row border-l border-r border-neutral-500/20">
+        <ScrollArea className=" h-[calc(100vh-100px)] w-full px-6 flex flex-col">
+          <div className="w-full h-full flex flex-col justify-between space-x-5">
             <Userprofile user={user} logginUserId={loggedInUser.id} />
             <Separator />
-            <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full">
-              <h2 className="text-center text-2xl font-bold m-5">
-                {user.displayname} ' posts
+            <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full ">
+              <h2 className="text-center text-2xl font-bold m-5 w-[80%] bg-neutral-800/60 h-[50px] rounded-lg flex items-center justify-center border border-neutral-400/20 ">
+                Post's Of {user.displayname}
               </h2>
 
               <Userpost userid={user.id} />
             </div>
-          </ScrollArea>
-        </div>
-        <div className=" flex justify-center  h-full w-[500px]">
-          <Trendsidebar />
-        </div>
+          </div>
+        </ScrollArea>
       </div>
     </main>
   );
@@ -91,7 +88,7 @@ async function Userprofile({ user, logginUserId }: Userprofileprops) {
     ),
   };
   return (
-    <div className="h-fit w-full p-5 bg-card space-y-5 shadow-sm mt-8 ">
+    <div className="h-full w-full p-5 bg-card space-y-5 shadow-sm ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
         <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
           <Loader2Icon className="w-10 h-10 animate-spin" />
@@ -130,6 +127,7 @@ async function Userprofile({ user, logginUserId }: Userprofileprops) {
           <EditProfileButton user={user} />
         ) : (
           <FollowerButton
+            className="w-20 h-8 text-xs"
             intialstate={followinfo}
             userid={user.id}
           ></FollowerButton>

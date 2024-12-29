@@ -9,7 +9,7 @@ import { Button } from "./ui/button";
 import FollowerButton from "./FollowerButton";
 import { getUserDataSelect } from "@/lib/types";
 import UserTooltip from "./UserTooltip";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 const fecthUsers = async () => {};
 export default async function Trendsidebar() {
   return (
@@ -18,10 +18,6 @@ export default async function Trendsidebar() {
       <Whotofollow />
     </div>
   );
-  async function trendingtopic() {
-    const trendingpost = await prisma.post.findMany({});
-  }
-
   async function Whotofollow() {
     const user = await currentUser();
 
@@ -51,7 +47,7 @@ export default async function Trendsidebar() {
     }
 
     return (
-      <div className="">
+      <div className="flex gap-y-2 flex-col">
         {usersToFollow.map((user) => (
           <div
             key={user.id}
@@ -60,12 +56,12 @@ export default async function Trendsidebar() {
             <UserTooltip user={user}>
               <Link href={`/user/${user.username}`} className="cursor-pointer">
                 <div className=" flex justify-start items-start rounded-full ">
-                  <Avatar>
+                  <Avatar className="w-9 h-9">
                     <AvatarImage
                       src={user.avatarurl || "https://github.com/shadcn.png"}
                     />
-                    <AvatarFallback>
-                      <Loader2 className="animate-spin h-4 w-4" />
+                    <AvatarFallback className="w-full h-full flex items-center justify-center">
+                      <Loader className="animate-spin h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -79,6 +75,7 @@ export default async function Trendsidebar() {
             </Link>
             <div className="flex w-[150px] justify-end items-center mt-3">
               <FollowerButton
+                className="w-20 h-8 text-xs"
                 userid={user.id}
                 intialstate={{
                   followers: user._count.follower,

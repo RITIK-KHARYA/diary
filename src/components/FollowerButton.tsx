@@ -14,11 +14,13 @@ import { useRouter } from "next/navigation";
 interface FollowerButtonProps {
   userid: string;
   intialstate: Followinfo;
+  className?: string;
 }
 
 export default function FollowerButton({
   userid,
   intialstate,
+  className
 }: FollowerButtonProps) {
   const { toast } = useToast();
 
@@ -57,6 +59,7 @@ export default function FollowerButton({
 
   return (
     <Button
+    className={className}
       variant={data.isfollowedbyUser ? "secondary" : "default"}
       onClick={() => mutate()}
     >

@@ -24,55 +24,55 @@ export default async function Menubar({ classname }: MenubarProps) {
     <div className={classname}>
       <Button
         variant="ghost"
-        className="flex items-start justify-start gap-3 m-2 "
+        className="flex items-start justify-start gap-x-3 hover:bg-neutral-900/90 "
         title="Home"
         asChild
       >
-        <Link href="/home">
+        <Link href="/home" prefetch={true}>
           <HomeIcon />
           Home
         </Link>
       </Button>
       <Button
         variant="ghost"
-        className="flex items-start justify-start gap-3 m-2 "
+        className="flex items-start justify-start gap-3 hover:bg-neutral-900/90 "
         title="Home"
         asChild
       >
-        <Link href="/message">
+        <Link href="/message" prefetch={true}>
           <Mail />
           Message
         </Link>
       </Button>
       <Button
         variant="ghost"
-        className="flex items-start justify-start gap-3 m-2 "
+        className="flex items-start justify-start gap-3 hover:bg-neutral-900/90 "
         title="Home"
         asChild
       >
-        <Link href="/notification">
+        <Link href="/notification" prefetch={true}>
           <Bell />
           Notification
         </Link>
       </Button>
       <Button
         variant="ghost"
-        className="flex items-start justify-start gap-3 m-2 "
+        className="flex items-start justify-start gap-3 hover:bg-neutral-900/90 "
         title="Home"
         asChild
       >
-        <Link href="/bookmarks">
+        <Link href="/bookmarks " prefetch={true}>
           <Bookmark />
           Bookmark
         </Link>
       </Button>
       <Button
         variant="ghost"
-        className="flex items-start justify-start gap-3 m-2 "
+        className="flex items-start justify-start gap-3 hover:bg-neutral-900/90 "
         title="Home"
         asChild
       >
-        <Link href={`/user/${username}`}>
+        <Link href={`/user/${username}`} prefetch={true}>
           <User2 />
           Profile
         </Link>

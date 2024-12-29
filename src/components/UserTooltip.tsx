@@ -57,7 +57,9 @@ export default function ({ children, user }: UserTooltipProps) {
               <Followercounter initialState={followrstate} userid={user.id} />
             </div>
             {loggedinuser !== user.id && (
-              <FollowerButton userid={user.id} intialstate={followrstate} />
+              <div className="w-full">
+                <FollowerButton userid={user.id} intialstate={followrstate}  className="w-full"/>
+              </div>
             )}
           </div>
         </TooltipContent>
