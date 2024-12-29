@@ -15,7 +15,7 @@ export default async function Home() {
     }
 
     return (
-      <main className="w-full mt-6">
+      <main className="w-screen grid grid-cols-1">
         <div className="flex flex-row justify-center space-x-6">
           {/* Left Section: Posts & Feeds */}
           <ScrollArea className="h-[calc(100vh-100px)] w-full max-w-2xl px-4 border-x border-gray-300">
@@ -40,9 +40,9 @@ export default async function Home() {
               </Tabs>
             </div>
           </ScrollArea>
-
-          {/* Right Section: Trends Sidebar */}
-          <Trendsidebar />
+          <div className="w-[25%]">
+            <Trendsidebar />
+          </div>
         </div>
       </main>
     );

@@ -1,8 +1,6 @@
 import prisma from "@/lib/prisma";
-
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
@@ -10,10 +8,10 @@ import FollowerButton from "./FollowerButton";
 import { getUserDataSelect } from "@/lib/types";
 import UserTooltip from "./UserTooltip";
 import { Loader } from "lucide-react";
-const fecthUsers = async () => {};
+
 export default async function Trendsidebar() {
   return (
-    <div className="sticky top-[5.56rem] h-fit flex-none md:block space-y-5 lg:w-80 rounded-lg border-2 border-neutral-500 bg-card p-3 right-5 bg-neutral-900">
+    <div className="sticky top-[5.56rem] h-fit flex-none md:block space-y-5 lg:w-80 rounded-lg border-2 border-neutral-500 bg-card p-3 bg-neutral-900">
       <div className="text-start font-bold text-white ">Who To Follow</div>
       <Whotofollow />
     </div>

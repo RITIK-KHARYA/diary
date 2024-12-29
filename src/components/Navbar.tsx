@@ -1,6 +1,7 @@
 import { EB_Garamond, Montserrat } from "next/font/google";
 import { getUser } from "@/actions/getUser";
 import CustomButton from "./userButton";
+import Link from "next/link";
 
 const ebGaramond = EB_Garamond({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -16,7 +17,7 @@ export default async function Navbar() {
         <div
           className={`flex justify-center items-center  text-3xl h-12 text-white font-semibold tracking-wider , ${montserrat.className}`}
         >
-          Diary
+          <Link href="/">Diary</Link>
         </div>
         <div className="flex justify-end">
           <div className="flex flex-row items-center justify-end gap-2 divide mr-4">

@@ -5,7 +5,7 @@ import { Followinfo, UserData, getUserDataSelect } from "@/lib/types";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import Trendsidebar from "@/components/Trendsidebar";
-import { Loader2Icon } from "lucide-react";
+import { Loader} from "lucide-react";
 import { formatDate } from "date-fns";
 import Userpost from "./postuser";
 import Followercounter from "@/components/followercounter";
@@ -56,7 +56,7 @@ export default async function Page({ params: { username } }: pageprops) {
   const user = await getUser(username, loggedInUser.id);
   return (
     <main className="flex w-full h-screen flex-col">
-      <div className="w-full h-full flex flex-row border-l border-r border-neutral-500/20">
+      <div className="w-full flex flex-row border-l border-r border-neutral-500/20">
         <ScrollArea className=" h-[calc(100vh-100px)] w-full px-6 flex flex-col">
           <div className="w-full h-full flex flex-col justify-between space-x-5">
             <Userprofile user={user} logginUserId={loggedInUser.id} />
@@ -91,7 +91,7 @@ async function Userprofile({ user, logginUserId }: Userprofileprops) {
     <div className="h-full w-full p-5 bg-card space-y-5 shadow-sm ">
       <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
         <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
-          <Loader2Icon className="w-10 h-10 animate-spin" />
+          <Loader className="w-10 h-10 animate-spin" />
         </AvatarFallback>
         <AvatarImage
           src={user.avatarurl || "https://github.com/shadcn.png"}

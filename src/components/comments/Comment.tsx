@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { formatRelative } from "date-fns";
 import Linkfy from "../Linkfy";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import PostMorebutton from "./MorecommentButton";
 
@@ -21,7 +21,7 @@ export default function Comment({ comment }: CommentProps) {
             <Avatar>
               <AvatarImage src={comment.user.avatarurl || ""} />
               <AvatarFallback>
-                <Loader2 className="animate-spin h-4 w-4" />
+                <Loader className="animate-spin h-4 w-4" />
               </AvatarFallback>
             </Avatar>
           </Link>

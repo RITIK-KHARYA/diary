@@ -1,6 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
 
 export default clerkMiddleware();
+
+// export async function middleware(req:NextRequest) {
+
+// }
 
 export const config = {
   matcher: [
