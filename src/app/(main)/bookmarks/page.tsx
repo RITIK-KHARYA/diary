@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 };
 export default function Page() {
   return (
-    <main className="flex gap-5 min-w-0 w-full ">
-      <div className=" w-full flex justify-center flex-col items-center  ">
-        <div className=" rounded-xl bg-card p-5  shadow-sm">
+    <main className="flex gap-4 min-w-0 w-full h-cal h-screen mb-10 gap-y-2">
+      <div className=" w-full flex justify-center flex-col h-screen gap-y-5">
+        <div className="w-full shadow-sm bg-neutral-900/50 rounded-xl h-16 justify-center flex items-center">
           <h1 className="font-bold text-2xl text-center ">Bookmarks</h1>
         </div>
         <Bookmark />

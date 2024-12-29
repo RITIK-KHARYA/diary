@@ -6,12 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from "@clerk/nextjs";
-import Menubar from "@/components/Menubar";
 import Navbar from "@/components/Navbar";
 import { ModeToggle } from "@/components/toggle-mode";
 import ReactQueryProvider from "./ReactQueryProvider";
@@ -33,13 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className="overflow-hidden">
+      <html lang="en" className="overflow-hidden"> 
         <body className={inter.className + "overflow-hidden"}>
           <NextSSRPlugin routerConfig={extractRouterConfig(filerouter)} />
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="dark"
               enableSystem
               disableTransitionOnChange
             >
