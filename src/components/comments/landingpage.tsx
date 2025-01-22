@@ -8,6 +8,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { useTheme } from "next-themes";
+import { Footer } from "../footer"; // Import the Footer component
 
 export default function LandingPage({
   isUserLoggedIn,
@@ -35,7 +36,7 @@ export default function LandingPage({
           </Link>
           <div className="leading-loose font-normal z-10 mt-10">
             <span className="text-4xl flex items-center justify-center font-bold text-white md:text-5xl mx-auto flex-wrap w-[650px]">
-              {animatedWords.map((letter, index) => (
+              {animatedWords.map((word, index) => (
                 <motion.span
                   className="px-1"
                   key={index}
@@ -43,7 +44,7 @@ export default function LandingPage({
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  {letter}
+                  {word}
                 </motion.span>
               ))}
             </span>
@@ -71,6 +72,7 @@ export default function LandingPage({
         color={particlesColor}
         refresh
       />
+      <Footer /> 
     </div>
   );
 }
