@@ -15,9 +15,9 @@ export default function Followercounter({
   const { data } = useFollowerinfo(userid, initialState);
 
   return (
-    <span>
-      followers:{" "}
-      <span className="text-semibold">
+    <span className="text-sm text-muted-foreground">
+      Followers:{" "}
+      <span className="">
         {formatNumber(data?.followers || 0)}
       </span>
     </span>

@@ -41,7 +41,7 @@ const UserTooltip = ({ children, user }: UserTooltipProps) => {
           align="start"
           className="w-96 shadow-lg animate-in fade-in-0 zoom-in-95"
         >
-          <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 rounded-xl p-6 space-y-6 border">
+          <div className="bg-background/45 backdrop-blur supports-[backdrop-filter]:bg-background/60 rounded-xl p-6 space-y-6 border">
             {/* Header Section */}
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
@@ -88,20 +88,20 @@ const UserTooltip = ({ children, user }: UserTooltipProps) => {
               )}
             </div>
 
-            {/* Stats Section */}
             <div className="flex gap-6 text-sm border-t pt-4">
               <div className="flex flex-col">
-                <span className="font-bold text-lg">
+                <span className="font-normal text-sm">
                   <Followercounter
                     initialState={followrstate}
                     userid={user.id}
                   />
                 </span>
-                <span className="text-muted-foreground">Followers</span>
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-lg">{user.following}</span>
+              <div className="flex flex-row gap-x-1" >
                 <span className="text-muted-foreground">Following</span>
+                <span className="text-muted-foreground text-sm">
+                  {followrstate.followers}
+                </span>
               </div>
             </div>
           </div>
