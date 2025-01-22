@@ -12,7 +12,7 @@ import { ScrollArea } from "./ui/scroll-area";
 
 export default async function Trendsidebar() {
   return (
-    <Card className="sticky top-[5.56rem] h-fit w-80 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <Card className="sticky top-[5.56rem] h-fit w-[350px] bg-neutral-900 border border-neutral-800 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-sm font-semibold">
           <Users className="h-4 w-4" />

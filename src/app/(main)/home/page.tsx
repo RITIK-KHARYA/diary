@@ -1,8 +1,8 @@
 import { createUserToDb } from "@/actions/createUserToDb";
 import PostEditor from "@/components/posts/editor/PostEditor";
-import Trendsidebar from "@/components/Trendsidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import ForYoufeed from "../ForYoufeed";
 import Followingfeed from "../Followingfeed";
 
@@ -15,43 +15,56 @@ export default async function Home() {
     }
 
     return (
-      <main className="w-screen grid grid-cols-1">
-        <div className="flex flex-row justify-center space-x-6">
-          {/* Left Section: Posts & Feeds */}
-          <ScrollArea className="h-[calc(100vh-100px)] w-full max-w-2xl px-4 border-x border-gray-300">
-            <div className="flex flex-col shadow-sm space-y-4">
-              {/* Post Editor */}
+      <div className="w-full">
+        <ScrollArea className="h-[calc(100vh-4rem)]">
+          <div className="px-4">
+            {/* Post Editor Section */}
+            <div className="mb-6">
               <PostEditor
-                avatar={user?.avatarurl || "https://github.com/shadcn.png"}
+                avatar={user.avatarurl || "https://github.com/shadcn.png"}
               />
+            </div>
 
-              {/* Tabs: For You and Following */}
-              <Tabs defaultValue="for-you">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="for-you">For You</TabsTrigger>
-                  <TabsTrigger value="following">Following</TabsTrigger>
-                </TabsList>
+            {/* Feed Section */}
+            <Tabs defaultValue="for-you" className="w-full">
+              <TabsList className="w-full mb-6">
+                <TabsTrigger
+                  value="for-you"
+                  className="flex-1 py-3 font-medium"
+                >
+                  For You
+                </TabsTrigger>
+                <TabsTrigger
+                  value="following"
+                  className="flex-1 py-3 font-medium"
+                >
+                  Following
+                </TabsTrigger>
+              </TabsList>
+
+              <div className="space-y-4 pb-20 lg:pb-0">
                 <TabsContent value="for-you">
                   <ForYoufeed />
                 </TabsContent>
                 <TabsContent value="following">
                   <Followingfeed />
                 </TabsContent>
-              </Tabs>
-            </div>
-          </ScrollArea>
-          <div className="w-[25%]">
-            <Trendsidebar />
+              </div>
+            </Tabs>
           </div>
-        </div>
-      </main>
+        </ScrollArea>
+      </div>
     );
   } catch (error) {
     console.error(error);
     return (
-      <main className="flex items-center justify-center h-screen">
-        <p className="text-red-500">Failed to load user data.</p>
-      </main>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <Alert variant="destructive" className="max-w-md">
+          <AlertDescription>
+            Unable to load user data. Please try again later.
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
 }

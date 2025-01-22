@@ -10,6 +10,8 @@ export default async function ParentComponent() {
 
   if (user) {
     redirect("/home");
+  } else {
+    redirect("/");
   }
 
   return (

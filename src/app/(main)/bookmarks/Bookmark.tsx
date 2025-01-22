@@ -57,13 +57,12 @@ export default function Bookmark() {
   }
   return (
     <>
-      {/* <DeletePostDialog post={posts[0]} open onClose={() => {}} /> */}
       <InfiniteScrollContainer
         classname="space-y-3  "
         onBottomReached={() => hasNextPage && fetchNextPage()}
       >
-        <ScrollArea className="h-[calc(100vh-150px)] w-fit px-6  flex flex-col   border-x-2">
-          <div className="flex flex-col gap-3 ">
+        <ScrollArea className="h-[calc(100vh-100px)] w-fit px-6 flex flex-col gap-3 ">
+          <div className="flex flex-col gap-3 bg-transparent">
             {posts.map((post) => (
               <Post key={post.id} post={post} />
             ))}

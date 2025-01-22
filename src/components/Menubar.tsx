@@ -53,12 +53,13 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   );
 };
 
+
 export const Menubar: React.FC<MenubarProps> = ({ username }) => {
   const [activeItem, setActiveItem] = useState("Home");
   const pathname = usePathname();
 
   return (
-    <div className="w-72 bg-black/95 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl shadow-black/20 h-fit">
+    <div className="w-60 bg-black/95 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden shadow-2xl shadow-black/20 h-fit">
      
       <div className="flex flex-col gap-2">
         <MenuItem

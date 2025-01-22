@@ -1,11 +1,11 @@
-import { notFound, useParams } from "next/navigation";
+// page.tsx
+import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { cache } from "react";
 import { Followinfo, UserData, getUserDataSelect } from "@/lib/types";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
-import Trendsidebar from "@/components/Trendsidebar";
-import { Loader} from "lucide-react";
+import { Loader, MapPin, Calendar, Link as LinkIcon } from "lucide-react";
 import { formatDate } from "date-fns";
 import Userpost from "./postuser";
 import Followercounter from "@/components/followercounter";
@@ -14,8 +14,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import EditProfileButton from "./EditProfileButton";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-interface pageprops {
+interface PageProps {
   params: { username: string };
 }
 
@@ -35,7 +39,7 @@ const getUser = cache(async (username: string, loggedInUserId: string) => {
 
 export async function generateMetadata({
   params: { username },
-}: pageprops): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const loggedInUser = await currentUser();
 
   if (!loggedInUser) return {};
@@ -44,100 +48,182 @@ export async function generateMetadata({
 
   return {
     title: `${user.displayname} (@${user.username})`,
+    description: user.bio || `Profile of ${user.displayname}`,
   };
 }
 
-export default async function Page({ params: { username } }: pageprops) {
-  const loggedInUser = await currentUser();
+interface UserProfileProps {
+  user: UserData;
+  loggedInUserId: string;
+}
 
-  if (!loggedInUser) {
-    return <p>You are not logged in</p>;
-  }
-  const user = await getUser(username, loggedInUser.id);
+function UserProfile({ user, loggedInUserId }: UserProfileProps) {
+  const followInfo: Followinfo = {
+    followers: user._count.follower,
+    isfollowedbyUser: user.follower.some(
+      ({ followerid }) => followerid === loggedInUserId
+    ),
+  };
+
   return (
-    <main className="flex w-full h-screen flex-col">
-      <div className="w-full flex flex-row border-l border-r border-neutral-500/20">
-        <ScrollArea className=" h-[calc(100vh-100px)] w-full px-6 flex flex-col">
-          <div className="w-full h-full flex flex-col justify-between space-x-5">
-            <Userprofile user={user} logginUserId={loggedInUser.id} />
-            <Separator />
-            <div className=" shadow-sm flex flex-col justify-center items-center w-full h-full ">
-              <h2 className="text-center text-2xl font-bold m-5 w-[80%] bg-neutral-800/60 h-[50px] rounded-lg flex items-center justify-center border border-neutral-400/20 ">
-                Post's Of {user.displayname}
-              </h2>
+    <div className="w-full">
+      <div className="relative">
+        <div className="h-48 bg-black rounded-b-lg" />
+        <div className="absolute -bottom-16 left-6">
+          <Avatar className="border-4 border-background size-32 shadow-lg">
+            <AvatarFallback className="bg-muted">
+              <Loader className="w-8 h-8 animate-spin" />
+            </AvatarFallback>
+            <AvatarImage
+              src={user.avatarurl || "https://github.com/shadcn.png"}
+              className="object-cover"
+            />
+          </Avatar>
+        </div>
 
-              <Userpost userid={user.id} />
-            </div>
-          </div>
-        </ScrollArea>
+        {/* Action Button */}
+        <div className="absolute bottom-4 right-6">
+          {user.id === loggedInUserId ? (
+            <EditProfileButton user={user} />
+          ) : (
+            <FollowerButton
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition"
+              intialstate={followInfo}
+              userid={user.id}
+            />
+          )}
+        </div>
       </div>
-    </main>
+
+      {/* Profile Info */}
+      <div className="mt-20 px-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-foreground">
+              {user.displayname}
+            </h1>
+            {/* {user.verified && (
+              <Badge variant="secondary" className="text-blue-500">
+                Verified
+              </Badge>
+            )} */}
+          </div>
+          <p className="text-muted-foreground">@{user.username}</p>
+        </div>
+
+        {/* Bio */}
+        {user.bio && (
+          <p className="mt-4 text-sm text-foreground whitespace-pre-line break-words">
+            {user.bio}
+          </p>
+        )}
+
+        {/* User Stats */}
+        <div className="mt-6 flex items-center space-x-6">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Calendar className="mr-2 h-4 w-4" />
+            Joined {formatDate(user.createdAt, "MMMM yyyy")}
+          </div>
+          <Separator orientation="vertical" className="h-4" />
+          <div className="text-sm">
+            <Followercounter userid={user.id} initialState={followInfo} />
+          </div>
+          <Separator orientation="vertical" className="h-4" />
+          <div className="text-sm">
+            <span className="font-semibold text-foreground">
+              {user._count.posts}
+            </span>
+            <span className="text-muted-foreground ml-1">posts</span>
+          </div>
+        </div>
+
+        {/* Content Tabs */}
+        <Tabs defaultValue="posts" className="mt-6">
+          <TabsList className="w-full justify-start border-b">
+            <TabsTrigger
+              value="posts"
+              className="flex-1 data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            >
+              Posts
+            </TabsTrigger>
+            <TabsTrigger
+              value="media"
+              className="flex-1 data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            >
+              Media
+            </TabsTrigger>
+            <TabsTrigger
+              value="likes"
+              className="flex-1 data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            >
+              Likes
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="posts" className="mt-6">
+            <Card>
+              <CardContent className="p-0">
+                <Userpost userid={user.id} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="media" className="mt-6">
+            <Card>
+              <CardContent className="py-8">
+                <div className="text-center text-muted-foreground">
+                  <div className="mb-2">No media available</div>
+                  <p className="text-sm">
+                    When {user.displayname} shares media, they'll appear here.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="likes" className="mt-6">
+            <Card>
+              <CardContent className="py-8">
+                <div className="text-center text-muted-foreground">
+                  <div className="mb-2">No liked posts yet</div>
+                  <p className="text-sm">
+                    Posts that {user.displayname} likes will appear here.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
   );
 }
 
-interface Userprofileprops {
-  user: UserData;
-  logginUserId: string;
-}
+export default async function Page({ params: { username } }: PageProps) {
+  const loggedInUser = await currentUser();
 
-async function Userprofile({ user, logginUserId }: Userprofileprops) {
-  const followinfo: Followinfo = {
-    followers: user._count.follower,
-    isfollowedbyUser: user.follower.some(
-      ({ followerid }) => followerid === logginUserId
-    ),
-  };
-  return (
-    <div className="h-full w-full p-5 bg-card space-y-5 shadow-sm ">
-      <Avatar className="mx-auto rounded-full max-h-60 size-full max-w-60">
-        <AvatarFallback className="rounded-full flex items-center justify-center m-2 w-56 h-56">
-          <Loader className="w-10 h-10 animate-spin" />
-        </AvatarFallback>
-        <AvatarImage
-          src={user.avatarurl || "https://github.com/shadcn.png"}
-          sizes="2xl"
-        />
-      </Avatar>
-      <div className="flex gap-3 sm:flex-nowrap bg-card shadow-sm ">
-        <div className="me-auto space-y-3">
-          <div>
-            <h1 className="text-align font-semibold text-foreground text-2xl">
-              {user.displayname}
-            </h1>
-            <p className="text-muted-foreground text-sm ">@{user.username}</p>
-          </div>
-          <div className="flex gap-y-2 flex-col">
-            <p className="text-muted-foreground text-sm">
-              {" "}
-              Member since {formatDate(user.createdAt, "MMM d, yyyy")}
-            </p>
-            <div className="flex gap-2 flex-row space-x-2 text-sm ">
-              <div className="text-foreground text-sm ">
-                {" "}
-                <Followercounter userid={user.id} initialState={followinfo} />
-              </div>
-              <span>
-                posts:{""}{" "}
-                <span className="semi-bold">{user._count.posts}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-        {user.id === logginUserId ? (
-          <EditProfileButton user={user} />
-        ) : (
-          <FollowerButton
-            className="w-20 h-8 text-xs"
-            intialstate={followinfo}
-            userid={user.id}
-          ></FollowerButton>
-        )}
+  if (!loggedInUser) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Card className="p-6">
+          <p className="text-lg text-muted-foreground">
+            Please log in to view this profile
+          </p>
+          {/* Add your login button/link here */}
+        </Card>
       </div>
-      {user.bio && (
-        <p className="overflow-hidden whitespace-pre-line break-words text-align text-sm">
-          {user.bio}
-        </p>
-      )}
-    </div>
+    );
+  }
+
+  const user = await getUser(username, loggedInUser.id);
+
+  return (
+    <main className="flex w-full h-screen flex-col bg-background">
+      <div className="w-full flex flex-row border-x border-neutral-500/20">
+        <ScrollArea className="h-[calc(100vh-100px)] w-full">
+          <UserProfile user={user} loggedInUserId={loggedInUser.id} />
+        </ScrollArea>
+      </div>
+    </main>
   );
 }
