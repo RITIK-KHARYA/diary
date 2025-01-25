@@ -1,7 +1,7 @@
 // ParentComponent.tsx (Server Component)
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import LandingPage from "@/components/comments/landingpage";
+import LandingPage from "@/components/landingpage";
 import Navbar from "@/components/Navbar";
 import AppBar from "@/components/app-bar";
 
@@ -10,8 +10,6 @@ export default async function ParentComponent() {
 
   if (user) {
     redirect("/home");
-  } else {
-    redirect("/");
   }
 
   return (

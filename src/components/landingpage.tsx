@@ -8,7 +8,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { useTheme } from "next-themes";
-import { Footer } from "../footer"; // Import the Footer component
+import { Footer } from "./footer"; // Import the Footer component
 
 export default function LandingPage({
   isUserLoggedIn,
@@ -72,7 +72,7 @@ export default function LandingPage({
         color={particlesColor}
         refresh
       />
-      <Footer /> 
+      <Footer />
     </div>
   );
 }
