@@ -5,14 +5,27 @@ import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ForYoufeed from "../ForYoufeed";
 import Followingfeed from "../Followingfeed";
+import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
+import { getPostDataInclude, getUserDataSelect } from "@/lib/types";
 
 export default async function Home() {
   try {
     const user = await createUserToDb();
-
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // const existinguser = await prisma.user.findUnique({
+    //   where: {
+    //     id: user.id,
+    //   },
+    //   select: getPostDataInclude(user.id),
+    // });
+    // try {
+    //   if (!existinguser) {
+    //     return user;
+    //   }
+    //   return existinguser;
+    // } catch (error) {
+    //   console.log(error, "user ka bhosda");
+    // }
 
     return (
       <div className="w-full">
@@ -24,8 +37,6 @@ export default async function Home() {
                 avatar={user.avatarurl || "https://github.com/shadcn.png"}
               />
             </div>
-
-            {/* Feed Section */}
             <Tabs defaultValue="for-you" className="w-full">
               <TabsList className="w-full mb-6">
                 <TabsTrigger

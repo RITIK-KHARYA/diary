@@ -9,6 +9,7 @@ import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { useTheme } from "next-themes";
 import { Footer } from "./footer"; // Import the Footer component
+import Image from "next/image";
 
 export default function LandingPage({
   isUserLoggedIn,
@@ -56,11 +57,11 @@ export default function LandingPage({
         </div>
         <div className="relative w-[950px] mx-auto pointer-events-auto z-40 mt-24">
           <div className="shadow-[0px_0px_300px_0px_#155e75] top-full left-0 bg-black absolute -z-10 flex max-w-screen-lg w-full aspect-video flex-col items-center justify-center overflow-hidden rounded-lg border bg-background">
-            <HeroVideoDialog
-              videoSrc="https://www.youtube.com/embed/U14GpQ5K03g"
-              thumbnailSrc="/thumbnail.jpg"
-              thumbnailAlt="Video Thumbnail"
-            />
+           <Image
+           src={"/screenshot.png"}
+           width={950}
+           height={534}
+           alt="Screenshot"/>
             <BorderBeam size={250} duration={12} delay={5} />
           </div>
         </div>

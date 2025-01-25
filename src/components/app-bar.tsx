@@ -25,8 +25,12 @@ export default function AppBar() {
           </span>
         </div>
         <div className="flex gap-4">
-          <Button className=" text-white rounded-lg h-9 w-28 text-sm gap-x-1
-           bg-neutral-900/20 hover:bg-neutral-900/80 border-neutral-400 border-[1px]  ">
+          <Button
+            className=" text-white rounded-lg h-9 w-28 text-sm gap-x-1
+           bg-neutral-900/20 hover:bg-neutral-900/80 border-neutral-400 border-[1px]  
+           "
+            onClick={() => router.push("https://discord.gg/dwCrs6h9xx")}
+          >
             <BiLogoDiscordAlt className="text-violet-400  " size={20} />
             Discord
           </Button>
