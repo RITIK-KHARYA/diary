@@ -49,14 +49,14 @@ export default async function Page({ params: { postid } }: pageprops) {
     );
   const post = await getPost(postid, user.id);
   return (
-    <main className="flex w-full min-w-0 gap-8 justify-center py-8 ">
-      <div className="px-16">
+    <div className="inline-flex flex-row w-full">
+      <main className="flex space-x-5 w-full items-center justify-around">
         <Post post={post} />
-      </div>
-      <div className="hidden top-[5.5rem] sticky h-fit w-80 flex-none lg:block ">
+      </main>
+      <div className="sticky h-fit w-80 lg:block  ">
         <Userinfosidebar user={post.user} />
       </div>
-    </main>
+    </div>
   );
 }
 

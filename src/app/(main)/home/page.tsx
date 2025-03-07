@@ -12,21 +12,7 @@ import { getPostDataInclude, getUserDataSelect } from "@/lib/types";
 export default async function Home() {
   try {
     const user = await createUserToDb();
-    // const existinguser = await prisma.user.findUnique({
-    //   where: {
-    //     id: user.id,
-    //   },
-    //   select: getPostDataInclude(user.id),
-    // });
-    // try {
-    //   if (!existinguser) {
-    //     return user;
-    //   }
-    //   return existinguser;
-    // } catch (error) {
-    //   console.log(error, "user ka bhosda");
-    // }
-
+//existing user middleware works not the client
     return (
       <div className="w-full">
         <ScrollArea className="h-[calc(100vh-4rem)]">

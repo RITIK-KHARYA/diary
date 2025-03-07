@@ -3,10 +3,6 @@ import { NextRequest } from "next/server";
 
 export default clerkMiddleware();
 
-// export async function middleware(req:NextRequest) {
-
-// }
-
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params

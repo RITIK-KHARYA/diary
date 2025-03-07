@@ -22,11 +22,6 @@ export default async function Layout({
           <div className="flex-1 min-w-0 max-w-2xl mx-auto w-full">
             {children}
           </div>
-
-          {/* Right Sidebar - Trends */}
-          <div className="hidden xl:block sticky top-4 w-80">
-            <Trendsidebar />
-          </div>
         </div>
       </div>
 
