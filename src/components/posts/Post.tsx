@@ -4,18 +4,17 @@ import { Media, Post as Postdata } from "@prisma/client";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { currentUser } from "@clerk/nextjs/server";
 import PostMorebutton from "./PostMorebutton";
-import { PostData, PostPage } from "@/lib/types";
+import { PostData } from "@/lib/types";
 import { useAuth } from "@clerk/nextjs";
 import Linkfy from "../Linkfy";
 import UserTooltip from "../UserTooltip";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LikeButton from "./LikeButton";
 import BookmarkButton from "./BookmarkButton";
-import { MessageSquare, MessagesSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Comments from "../comments/Commnets";
 
 interface PostProps {
@@ -25,25 +24,26 @@ interface PostProps {
 export default function Post({ post }: PostProps) {
   const { userId } = useAuth();
   const [showcomments, setshowcomments] = useState(false);
+
   return (
-    <article className=" group/post space-y-5 rounded-lg bg-card pb-6 pt-3 px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-full">
-      <div className="flex justify-between gap-3 item-start w-full">
-        <div className="flex   gap-5">
+    <article className="group/post space-y-3 sm:space-y-5 rounded-lg bg-card py-3 px-3 sm:pb-6 sm:pt-3 sm:px-6 shadow-sm border border-neutral-700/.[0.2] bg-neutral-900 h-fit w-full">
+      <div className="flex justify-between gap-2 sm:gap-3 item-start w-full">
+        <div className="flex gap-2 sm:gap-5 w-full">
           <UserTooltip user={post.user}>
             <Link href={"/"}>
-              <Avatar className="">
+              <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                 <AvatarImage
                   src={post.user.avatarurl || "https://github.com/shadcn.png"}
-                ></AvatarImage>
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </Link>
           </UserTooltip>
 
-          <div className="flex flex-col w-full">
-            <div className="flex flex-row   space-x-2 justify-between ">
-              <div className="flex flex-row justify-start items-start gap-1 ">
-                <span className=" text-muted-foreground  text-xs hover:underline cursor-pointer">
+          <div className="flex flex-col w-full min-w-0">
+            <div className="flex flex-row space-x-2 justify-between">
+              <div className="flex flex-row justify-start items-start gap-1 flex-wrap">
+                <span className="text-muted-foreground text-xs hover:underline cursor-pointer">
                   @{post.user.displayname}
                 </span>
 
@@ -56,19 +56,21 @@ export default function Post({ post }: PostProps) {
               </div>
 
               {post.user.id === userId && (
-                <div className="h-4 w-4  ">
+                <div className="h-4 w-4">
                   <PostMorebutton
                     post={post}
-                    classname="opacity-0 group-hover/post:opacity-100 transition-opacity w-4 h-4 rounded-md "
+                    classname="opacity-0 group-hover/post:opacity-100 transition-opacity w-4 h-4 rounded-md"
                   />
                 </div>
               )}
             </div>
+
             <Linkfy>
-              <div className=" whitespace-pre-line break-words  flex w-[500px] break-all py-3">
+              <div className="whitespace-pre-line break-words flex w-full py-2 sm:py-3 text-sm sm:text-base">
                 <Link
                   href={`/posts/${post.id}`}
                   suppressHydrationWarning={true}
+                  className="w-full"
                 >
                   {post.content}
                 </Link>
@@ -78,12 +80,12 @@ export default function Post({ post }: PostProps) {
                 <MediaPreviews attachments={post.attachments} />
               )}
 
-              <div className="flex justify-between  items-center mt-4 ">
+              <div className="flex justify-between items-center mt-3 sm:mt-4 text-xs sm:text-sm">
                 <LikeButton
                   postid={post.id}
                   intialState={{
                     likes: post._count.likes,
-                    islikedbyUser: post.likes.some((l) => l.userId === userId), //where in the array when there is a match atleast one to satisfy the condition
+                    islikedbyUser: post.likes.some((l) => l.userId === userId),
                   }}
                 />
                 <BookmarkButton
@@ -111,11 +113,12 @@ export default function Post({ post }: PostProps) {
 interface MediaPreviewsProps {
   attachments: Media[];
 }
+
 function MediaPreviews({ attachments }: MediaPreviewsProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-3",
+        "flex flex-col gap-2 sm:gap-3 mt-2",
         attachments.length > 1 && "sm:grid sm:grid-cols-2"
       )}
     >
@@ -129,27 +132,30 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
 interface MediaPreviewProps {
   media: Media;
 }
+
 function MediaPreview({ media }: MediaPreviewProps) {
   if (media.type === "IMAGE") {
     return (
-      <Image
-        src={media.url}
-        alt="Attachment"
-        width={500}
-        height={500}
-        className="mx-auto size-fit max-h-[30rem] rounded-2xl"
-        suppressHydrationWarning
-      />
+      <div className="relative w-full">
+        <Image
+          src={media.url}
+          alt="Attachment"
+          width={500}
+          height={500}
+          className="w-full h-auto max-h-48 sm:max-h-96 object-contain rounded-lg sm:rounded-2xl"
+          suppressHydrationWarning
+        />
+      </div>
     );
   }
 
   if (media.type === "VIDEO") {
     return (
-      <div>
+      <div className="w-full">
         <video
           src={media.url}
           controls
-          className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+          className="w-full max-h-48 sm:max-h-96 rounded-lg sm:rounded-2xl"
         />
       </div>
     );
@@ -162,11 +168,12 @@ interface commentsbuttonprops {
   onClick: () => void;
   post: PostData;
 }
+
 function CommentButton({ onClick, post }: commentsbuttonprops) {
   return (
-    <button className="flex items-center gap-2" onClick={onClick}>
-      <MessageSquare className="size-5" />
-      <span className="text-sm tabular-nums text-foreground">
+    <button className="flex items-center gap-1 sm:gap-2" onClick={onClick}>
+      <MessageSquare className="size-4 sm:size-5" />
+      <span className="text-xs sm:text-sm tabular-nums text-foreground">
         {post._count.comment} <span className="hidden sm:inline">Comments</span>
       </span>
     </button>
