@@ -11,25 +11,27 @@ export default async function Layout({
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-start gap-4 p-4">
-          {/* Left Sidebar - Menubar */}
-          <div className="hidden lg:block sticky top-4">
-            <Menubar username={username} />
-          </div>
+      {/* Desktop grid layout */}
+      <div className="max-w-full mx-auto grid grid-cols-4 gap-6 p-6">
+        {/* Menubar - 1/4 width */}
+        <div className="hidden lg:block col-span-1 mx-auto items-center justify-center sticky top-6 h-fit sm:block">
+          <Menubar username={username} isCompact={false} />
+        </div>
 
-          {/* Main Content Area */}
-          <div className="flex-1 min-w-0 max-w-2xl mx-auto w-full">
-            {children}
+        {/* Main content - 2/4 width (middle) */}
+        <main className="col-span-4  sm:w-full lg:col-span-2 min-w-0">{children}</main>
+
+
+        <div className="hidden lg:block col-span-1 sticky top-6 h-fit">
+          <div className="bg-black/95  backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden shadow-2xl shadow-black/20">
+            <Trendsidebar />
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation - Fixed at bottom */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10">
-        <div className="flex justify-around py-2">
-          <Menubar username={username} />
-        </div>
+      {/* Mobile menubar - only visible on small screens */}
+      <div className="lg:hidden md:block fixed bottom-0 left-0 right-0">
+        <Menubar username={username} isCompact={true} />
       </div>
     </div>
   );

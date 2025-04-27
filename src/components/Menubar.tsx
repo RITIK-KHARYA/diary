@@ -11,10 +11,12 @@ interface MenuItemProps {
   label: string;
   href: string;
   isActive: boolean;
+  isCompact?: boolean;
 }
 
 interface MenubarProps {
   username: string;
+  isCompact?: boolean;
 }
 
 export const MenuItem: React.FC<MenuItemProps> = ({
@@ -22,7 +24,30 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   label,
   href,
   isActive,
+  isCompact = false,
 }) => {
+  if (isCompact) {
+    return (
+      <Link
+        href={href}
+        prefetch={true}
+        className={`flex flex-col items-center justify-center p-2 transition-all duration-300 relative ${
+          isActive ? "text-white" : "text-gray-400 hover:text-white"
+        }`}
+      >
+        <Icon
+          className={`w-6 h-6 transition-transform duration-300 ${
+            isActive ? "scale-110" : "hover:scale-110"
+          }`}
+        />
+        <span className="text-xs mt-1">{label}</span>
+        {isActive && (
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-t-full" />
+        )}
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={href}
@@ -53,14 +78,59 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   );
 };
 
-
-export const Menubar: React.FC<MenubarProps> = ({ username }) => {
-  const [activeItem, setActiveItem] = useState("Home");
+export const Menubar: React.FC<MenubarProps> = ({ username, isCompact }) => {
   const pathname = usePathname();
 
+  // Determine if we're using the compact version based on screen size or prop
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const useCompactView = isCompact !== undefined ? isCompact : isMobile;
+
+  // For mobile view, use a different container style
+  if (useCompactView) {
+    return (
+      <div className="w-full flex justify-around items-center bg-black/95 backdrop-blur-xl border-t border-white/10 py-2">
+        <MenuItem
+          icon={Home}
+          label="Home"
+          href="/home"
+          isActive={pathname === "/home"}
+          isCompact={true}
+        />
+        <MenuItem
+          icon={MessageSquare}
+          label="Message"
+          href="/message"
+          isActive={pathname === "/message"}
+          isCompact={true}
+        />
+        <MenuItem
+          icon={Bell}
+          label="Notification"
+          href="/notification"
+          isActive={pathname === "/notification"}
+          isCompact={true}
+        />
+        <MenuItem
+          icon={Bookmark}
+          label="Bookmark"
+          href="/bookmarks"
+          isActive={pathname === "/bookmarks"}
+          isCompact={true}
+        />
+        <MenuItem
+          icon={User}
+          label="Profile"
+          href={`/user/${username}`}
+          isActive={pathname === `/user/${username}`}
+          isCompact={true}
+        />
+      </div>
+    );
+  }
+
+  // Desktop view
   return (
     <div className="w-60 bg-black/95 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden shadow-2xl shadow-black/20 h-fit">
-     
       <div className="flex flex-col gap-2">
         <MenuItem
           icon={Home}

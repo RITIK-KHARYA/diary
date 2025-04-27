@@ -5,19 +5,14 @@ import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ForYoufeed from "../ForYoufeed";
 import Followingfeed from "../Followingfeed";
-import { revalidatePath } from "next/cache";
-import prisma from "@/lib/prisma";
-import { getPostDataInclude, getUserDataSelect } from "@/lib/types";
 
 export default async function Home() {
   try {
     const user = await createUserToDb();
-//existing user middleware works not the client
     return (
-      <div className="w-full">
-        <ScrollArea className="h-[calc(100vh-4rem)]">
-          <div className="px-4">
-            {/* Post Editor Section */}
+      <div className="w-full rounded-xl border border-white/10 bg-black/95 backdrop-blur-xl overflow-hidden shadow-lg">
+        <ScrollArea className="h-[calc(100vh-6rem)]">
+          <div className="px-4 py-4">
             <div className="mb-6">
               <PostEditor
                 avatar={user.avatarurl || "https://github.com/shadcn.png"}
@@ -39,7 +34,7 @@ export default async function Home() {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="space-y-4 pb-20 lg:pb-0">
+              <div className="space-y-4">
                 <TabsContent value="for-you">
                   <ForYoufeed />
                 </TabsContent>

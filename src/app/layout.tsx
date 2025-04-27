@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import {
   ClerkProvider,
 } from "@clerk/nextjs";
+
 import Navbar from "@/components/Navbar";
 import { ModeToggle } from "@/components/toggle-mode";
 import ReactQueryProvider from "./ReactQueryProvider";

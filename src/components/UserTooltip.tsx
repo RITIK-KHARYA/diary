@@ -14,7 +14,6 @@ import FollowerButton from "./FollowerButton";
 import { useToast } from "./ui/use-toast";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
-import { Button } from "./ui/button";
 import { MapPin, Link as LinkIcon, Calendar } from "lucide-react";
 
 interface UserTooltipProps {
