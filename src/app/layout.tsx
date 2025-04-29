@@ -15,6 +15,7 @@ import { filerouter } from "./api/uploadthing/core";
 import { extractRouterConfig } from "uploadthing/server";
 import { Toaster } from "@/components/ui/toaster";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

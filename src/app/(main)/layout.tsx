@@ -19,7 +19,7 @@ export default async function Layout({
         </div>
 
         {/* Main content - 2/4 width (middle) */}
-        <main className="col-span-4  sm:w-full lg:col-span-2 min-w-0">{children}</main>
+        <main className="col-span-4  sm:w-full lg:col-span-2 min-w-0 -ml-8">{children}</main>
 
 
         <div className="hidden lg:block col-span-1 sticky top-6 h-fit">
